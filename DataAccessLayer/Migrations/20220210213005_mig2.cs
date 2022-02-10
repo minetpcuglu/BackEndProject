@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class mig4 : Migration
+    public partial class mig2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,7 +21,7 @@ namespace DataAccessLayer.Migrations
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelephoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,7 +35,7 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AwardName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,7 +52,7 @@ namespace DataAccessLayer.Migrations
                     Section = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NoteAverage = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +66,7 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MyHobby = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

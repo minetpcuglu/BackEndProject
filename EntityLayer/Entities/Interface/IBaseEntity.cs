@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityLayer.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace EntityLayer.Entities.Interface
 {
    public interface IBaseEntity
     {
-        DateTime CreateDate { get; set; }
+        Status Status { get; set; }
     }
 }
