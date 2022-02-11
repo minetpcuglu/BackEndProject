@@ -10,5 +10,6 @@ namespace BusinessLayer.Services.Interface
   public  interface IHobbyService
     {
         Task<List<HobbyDTO>> GetAll();
+        Task AddHobby(HobbyDTO hobbyDTO);
     }
 }
