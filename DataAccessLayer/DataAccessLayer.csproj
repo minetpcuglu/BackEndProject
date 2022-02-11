@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Concrete\EntityTypeRepositories\" />
-    <Folder Include="Repositories\Interface\EntityTypeRepositories\" />
     <Folder Include="UnitOfWorks\" />
   </ItemGroup>
 
