@@ -1,4 +1,5 @@
 ﻿using EntityLayer.Entities.Interface;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,14 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
 
         //Task<bool> Any(Expression<Func<T, bool>> expression);
         //Task<T> FirstOrDefault(Expression<Func<T, bool>> filter);
+
+        Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> selector,
+                                                     Expression<Func<T, bool>> expression = null,
+                                                     Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null,
+                                                     Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+                                                     bool disableTracing = true,
+                                                     int pageIndex = 1,
+                                                     int pageSize = 3);
         Task GetById(int id);
 
 

@@ -1,11 +1,10 @@
+
+
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using BusinessLayer.IoC;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BackEndProject
 {
@@ -17,10 +16,16 @@ namespace BackEndProject
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+              Host.CreateDefaultBuilder(args)
+
+              .UseServiceProviderFactory(new AutofacServiceProviderFactory()) // projenin yaþam sürelerini autofac ile belleðe kaydetme 
+              .ConfigureContainer<ContainerBuilder>(builder =>
+              {
+                  builder.RegisterModule(new RepositoriesModule());
+              })
+                  .ConfigureWebHostDefaults(webBuilder =>
+                  {
+                      webBuilder.UseStartup<Startup>();
+                  });
     }
 }

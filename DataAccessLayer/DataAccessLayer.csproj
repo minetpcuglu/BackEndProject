@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UnitOfWorks\" />
+    <Folder Include="Models\VM%27s\" />
   </ItemGroup>
 
 </Project>

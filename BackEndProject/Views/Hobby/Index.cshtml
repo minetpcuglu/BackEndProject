@@ -1,0 +1,19 @@
+﻿
+@model IQueryable<HobbyDTO>
+<table class="table table-bordered">
+    <tr>
+        <td>1</td>
+        <td>1</td>
+    
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.MyHobby</td>
+           
+
+        </tr>
+    }
+</table>
