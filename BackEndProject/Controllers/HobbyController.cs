@@ -1,7 +1,6 @@
-﻿using BusinessLayer.Services.Concrete;
+﻿
+using AutoMapper;
 using BusinessLayer.Services.Interface;
-using DataAccessLayer.Repositories.Interface.EntityTypeRepositories;
-using DataAccessLayer.UnitOfWorks.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,10 +12,11 @@ namespace BackEndProject.Controllers
     public class HobbyController : Controller
     {
         private readonly IHobbyService _hobbyServices;
-
-        public HobbyController(IHobbyService hobbyService)
+   
+        public HobbyController(IHobbyService hobbyService )
         {
             _hobbyServices = hobbyService;
+           
         }
 
         public async Task<IActionResult> Index()

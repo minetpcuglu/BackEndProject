@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataAccessLayer.Models.DTO_s;
+using DataAccessLayer.Models.DTOs;
 using EntityLayer.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.AutoMapper
 {
-    public class Mapping:Profile
+   public class HobbyMapping:Profile
     {
-        public Mapping()
+        public HobbyMapping()
         {
             CreateMap<Hobby, HobbyDTO>().ReverseMap();
         }

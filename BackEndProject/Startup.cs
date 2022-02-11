@@ -1,3 +1,4 @@
+using BusinessLayer.AutoMapper;
 using BusinessLayer.Services.Concrete;
 using BusinessLayer.Services.Interface;
 using DataAccessLayer.Context;
@@ -32,6 +33,7 @@ namespace BackEndProject
             services.AddControllersWithViews();
 
             services.AddScoped<IHobbyService, HobbyService>(); /// dý 
+            services.AddAutoMapper(typeof(HobbyMapping));
 
         }
 

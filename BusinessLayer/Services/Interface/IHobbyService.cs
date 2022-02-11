@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models.DTO_s;
+﻿using DataAccessLayer.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace BusinessLayer.Services.Interface
 {
   public  interface IHobbyService
     {
-        Task<IQueryable<HobbyDTO>> GetAll();
+        Task<List<HobbyDTO>> GetAll();
     }
 }
