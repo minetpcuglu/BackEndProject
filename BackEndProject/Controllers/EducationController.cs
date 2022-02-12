@@ -55,11 +55,11 @@ namespace BackEndProject.Controllers
         }
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> EditEducation(EducationVM educationVM)
-        //{
-        //  var value=  await _educationService
-        //    return RedirectToAction("GetList");
-        //}
+        [HttpPost]
+        public async Task<IActionResult> EditEducation(EducationVM educationVM)
+        {
+              await _educationService.Update(educationVM);
+            return RedirectToAction("GetList");
+        }
     }
 }

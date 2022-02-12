@@ -54,9 +54,12 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<EducationVM>(educationGet);
         }
 
-        public Task Update(EducationVM entity)
+        public async Task Update(EducationVM entity)
         {
-            throw new NotImplementedException();
+            var educationGet= await _unitOfWork.EducationRepository.GetById(entity.Id);
+            var hobbyUpdate = _mapper.Map<EducationVM>(entity);
+            await _unitOfWork.EducationRepository.Update(educationGet);
+            await _unitOfWork.Commit();
         }
     }
 }

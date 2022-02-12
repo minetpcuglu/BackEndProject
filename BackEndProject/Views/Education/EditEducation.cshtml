@@ -1,0 +1,42 @@
+﻿@model EducationVM
+
+<form method="post" asp-controller="Education" asp-action="EditEducation">
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="All"></div>
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <div class="form-group">
+                <label asp-for="SchollName"><b> Okul Adı: </b>  </label>
+                <input asp-for="SchollName" class="form-control" value="@Model.SchollName" />
+                <span asp-validation-for="SchollName" class="text-danger"></span>
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Section"><b> Bölüm: </b>  </label>
+                <input asp-for="Section" class="form-control" value="@Model.Section" />
+                <span asp-validation-for="Section" class="text-danger"></span>
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="NoteAverage"><b> Ortalama: </b>  </label>
+                <input asp-for="NoteAverage" class="form-control" value="@Model.NoteAverage" />
+                <span asp-validation-for="NoteAverage" class="text-danger"></span>
+
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Date"> Tarih: </b>  </label>
+                <input asp-for="Date" class="form-control" value="@Model.Date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+
+        </div>
+        <br />
+    </div>
+</form>

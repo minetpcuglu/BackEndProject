@@ -14,7 +14,7 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
     {
         Task insert(T t);
         void Delete(T t);
-        void Update(T t);
+        Task Update(T t);
         Task<List<T>> GetAll(); // Asenkron programlama yapmak istediğimiz methodlarımızı "TASK" olarak işaretlenir.
         Task<List<T>> GetListAll(Expression<Func<T, bool>> filter);  //filter 
         Task<T> Get(Expression<Func<T, bool>> filter);  //dışarıdann bir şart alıcak

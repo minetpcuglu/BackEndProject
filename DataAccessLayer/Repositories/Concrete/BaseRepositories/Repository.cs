@@ -37,11 +37,8 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
 
         public async Task<List<T>> GetListAll(Expression<Func<T, bool>> filter) => await _table.Where(filter).ToListAsync();
 
-        public void Update(T t)
-        {
-         
-            _context.Entry(t).State = EntityState.Modified;
-        }
+        public async Task Update(T t) => _context.Entry(t).State = EntityState.Modified;
+      
 
         public async Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> selector,
                                                           Expression<Func<T, bool>> expression = null,
