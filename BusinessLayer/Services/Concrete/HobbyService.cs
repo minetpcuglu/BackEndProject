@@ -52,7 +52,7 @@ namespace BusinessLayer.Services.Concrete
 
             if (hobbyDTO.MyHobby != hobby.MyHobby)
             {
-                hobby.MyHobby =hobbyDTO.MyHobby;
+                hobby.MyHobby = hobbyDTO.MyHobby;           
                 _unitOfWork.HobbyRepository.Update(hobby);
                 await _unitOfWork.Commit();
             }
@@ -75,8 +75,9 @@ namespace BusinessLayer.Services.Concrete
         public async Task<HobbyDTO> GetById(int id)
         {
            var hobby  = await _unitOfWork.HobbyRepository.GetById(id);
-
             return _mapper.Map<HobbyDTO>(hobby);
         }
+
+
     }
 }

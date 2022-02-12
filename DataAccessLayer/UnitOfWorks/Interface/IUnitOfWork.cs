@@ -10,7 +10,7 @@ namespace DataAccessLayer.UnitOfWorks.Interface
    public interface IUnitOfWork : IAsyncDisposable
     {
         //IAboutRepository AboutRepository { get; }
-        //IEducationRepository EducationRepository { get; }
+        IEducationRepository EducationRepository { get; }
         IHobbyRepository HobbyRepository { get; }
         //IAwardRepository AwardRepository { get; }
         Task Commit();  // => Başarılı bir işlemin sonucunda çalıştırılır. İşlemin başalamasından itibaren tüm değişikliklerin veri tabanına uygulanmasını temin eder.

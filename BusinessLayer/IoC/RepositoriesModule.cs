@@ -14,6 +14,7 @@ namespace BusinessLayer.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<HobbyRepository>().As<IHobbyRepository>().InstancePerLifetimeScope(); 
+            builder.RegisterType<EducationRepository>().As<IEducationRepository>().InstancePerLifetimeScope(); 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             

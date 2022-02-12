@@ -33,7 +33,9 @@ namespace BackEndProject
             services.AddControllersWithViews();
 
             services.AddScoped<IHobbyService, HobbyService>(); /// dý 
+            services.AddScoped<IEducationService, EducationService>(); /// dý 
             services.AddAutoMapper(typeof(HobbyMapping));
+            services.AddAutoMapper(typeof(EducationMapping));
 
         }
 

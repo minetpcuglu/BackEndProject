@@ -1,0 +1,32 @@
+﻿@model List<EducationVM>
+
+<table class="table table-bordered">
+    <tr>
+        <td>#</td>
+        <td>Okul Adı</td>
+        <th> Bölüm  </th>
+        <th> Not Ortalaması </th>
+        <th> Tarih </th>
+        <th> Sil</th>
+        <th> Güncelle  </th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.SchollName</td>
+            <td>@item.Section</td>
+            <td>@item.NoteAverage</td>
+            <td>@item.Date</td>
+            <td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
+            <td><a href="/Education/UpdateEducation/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
+
+
+        </tr>
+    }
+</table>
+
+<a href="/Education/AddEducation/" class="btn btn-primary">Eğitim Bilgisi Ekle</a>

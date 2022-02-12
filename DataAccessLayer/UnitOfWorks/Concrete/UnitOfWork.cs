@@ -41,15 +41,15 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
         //}
 
 
-        //private IEducationRepository _educationRepository;
-        //public IEducationRepository EducationRepository
-        //{
-        //    get
-        //    {
-        //        if (_educationRepository == null) _educationRepository = new EducationRepository(_db);
-        //        return _educationRepository;
-        //    }
-        //}
+        private IEducationRepository _educationRepository;
+        public IEducationRepository EducationRepository
+        {
+            get
+            {
+                if (_educationRepository == null) _educationRepository = new EducationRepository(_db);
+                return _educationRepository;
+            }
+        }
 
         private IHobbyRepository _hobbyRepository;
         public IHobbyRepository HobbyRepository
