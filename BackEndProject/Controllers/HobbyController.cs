@@ -47,5 +47,25 @@ namespace BackEndProject.Controllers
            await _hobbyServices.Delete(id);
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateHobby(int id)
+        {
+           var value = await _hobbyServices.GetById(id);
+            return View(value);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateHobby(HobbyDTO hobbyDTO)
+        {
+            await _hobbyServices.EditHobby(hobbyDTO);
+            
+            return RedirectToAction("Index");
+        }
+
+
+       
     }
 }

@@ -44,6 +44,21 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
+        public async Task EditHobby(HobbyDTO hobbyDTO)
+        {
+            var hobby = await _unitOfWork.HobbyRepository.GetById(hobbyDTO.Id);
+         
+            var hobbyUpdate = _mapper.Map<Hobby>(hobbyDTO);
+
+            if (hobbyDTO.MyHobby != hobby.MyHobby)
+            {
+                hobby.MyHobby =hobbyDTO.MyHobby;
+                _unitOfWork.HobbyRepository.Update(hobby);
+                await _unitOfWork.Commit();
+            }
+
+        }
+
         public async Task<List<HobbyDTO>> GetAll()
         {
           

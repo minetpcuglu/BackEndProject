@@ -1,0 +1,21 @@
+﻿@model HobbyDTO
+
+<form method="post" asp-controller="Hobby" asp-action="UpdateHobby">
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="All"></div>
+            <input type="hidden" name="EmployeeId" value="@Model.Id" />
+            <div class="form-group">
+                <label asp-for="MyHobby"><b> Personel Adı Soyadı: </b>  </label>
+                <input asp-for="MyHobby" class="form-control" value="@Model.MyHobby" />
+                <span asp-validation-for="MyHobby" class="text-danger"></span>
+
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+
+        </div>
+        <br />
+    </div>
+</form>
