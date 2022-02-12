@@ -24,14 +24,16 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
         }
         public async Task insert(T t) => await _table.AddAsync(t);
         public void Delete(T t) =>  _table.Remove(t); //** 
-        public async Task Get(Expression<Func<T, bool>> filter)
-        {
-            await _table.Where(filter).ToListAsync();
+
+        public async Task<T> Get(Expression<Func<T, bool>> filter) => await _table.Where(filter).FirstOrDefaultAsync();
+        //public async Task<T> Get(Expression<Func<T, bool>> filter)
+        //{
+        //    await _table.Where(filter).FirstOrDefaultAsync();
             
-        }
+        //}
         public async Task<List<T>> GetAll() => await _table.ToListAsync();
 
-        public async Task GetById(int id) => await _table.FindAsync(id);
+        public async Task<T> GetById(int id) => await _table.FindAsync(id);
 
         public async Task<List<T>> GetListAll(Expression<Func<T, bool>> filter) => await _table.Where(filter).ToListAsync();
 

@@ -1,0 +1,26 @@
+﻿
+@model HobbyDTO
+
+<br />
+<form method="post" asp-controller="Hobby" asp-action="AddHobby">
+    <div>
+        <div>
+            <br />
+            <label asp-for="MyHobby"> <b>Hobi:</b></label>
+            <input asp-for="MyHobby" type="text" class="form-control" />
+            <span asp-validation-for="MyHobby" class="text-danger"></span>
+
+            <br />
+            <br />
+
+
+        </div>
+    </div>
+
+    <br>
+
+    <button type="submit" href="/Hobby/AddHobby/" class="btn btn-outline-success"><b>Hobi Oluştur</b></button>
+    <br />
+
+
+</form>

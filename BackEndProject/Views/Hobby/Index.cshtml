@@ -4,16 +4,21 @@
     <tr>
         <td>1</td>
         <td>1</td>
-    
+        <th> Sil  </th>
+      
+
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.Id</td>
-            <td>@item.MyHobby</td>
-           
+<tr>
+    <td>@item.Id</td>
+    <td>@item.MyHobby</td>
+    <td><a href="/Hobby/DeleteHobby/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
 
-        </tr>
+
+</tr>
     }
 </table>
+
+<a href="/Hobby/AddHobby/" class="btn btn-primary">Yeni Hobi Ekle</a>

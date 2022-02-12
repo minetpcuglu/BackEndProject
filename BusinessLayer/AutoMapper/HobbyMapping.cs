@@ -14,6 +14,7 @@ namespace BusinessLayer.AutoMapper
         public HobbyMapping()
         {
             CreateMap<Hobby, HobbyDTO>().ReverseMap();
+            CreateMap<HobbyDTO, Hobby>().ReverseMap();
         }
     }
 }

@@ -11,5 +11,9 @@ namespace BusinessLayer.Services.Interface
     {
         Task<List<HobbyDTO>> GetAll();
         Task AddHobby(HobbyDTO hobbyDTO);
+        Task<HobbyDTO> GetById(int id);
+        Task Delete(int id);
+
+
     }
 }

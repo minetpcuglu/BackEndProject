@@ -26,12 +26,21 @@ namespace BusinessLayer.Services.Concrete
             _mapper = mapper;
         }
 
+      
+
         public async Task AddHobby(HobbyDTO hobbyDTO)
         { 
             var addHobby = _mapper.Map<HobbyDTO, Hobby>(hobbyDTO);
        
             await _unitOfWork.HobbyRepository.insert(addHobby);
    
+            await _unitOfWork.Commit();
+        }
+
+        public async Task Delete (int id)
+        {
+            var deleteHobby = await _unitOfWork.HobbyRepository.Get(x => x.Id == id);
+            _unitOfWork.HobbyRepository.Delete(deleteHobby);
             await _unitOfWork.Commit();
         }
 
@@ -45,6 +54,14 @@ namespace BusinessLayer.Services.Concrete
 
             //var newList = hobbyList.AsQueryable().Select(x => new HobbyDTO { Id = x.Id, MyHobby = x.MyHobby }); automapper kullanmazsak
             return list;
+        }
+    
+
+        public async Task<HobbyDTO> GetById(int id)
+        {
+           var hobby  = await _unitOfWork.HobbyRepository.GetById(id);
+
+            return _mapper.Map<HobbyDTO>(hobby);
         }
     }
 }
