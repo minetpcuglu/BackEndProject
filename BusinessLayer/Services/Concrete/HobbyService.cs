@@ -28,7 +28,7 @@ namespace BusinessLayer.Services.Concrete
 
       
 
-        public async Task AddHobby(HobbyDTO hobbyDTO)
+        public async Task Add(HobbyDTO hobbyDTO)
         { 
             var addHobby = _mapper.Map<HobbyDTO, Hobby>(hobbyDTO);
        
@@ -44,15 +44,15 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-        public async Task EditHobby(HobbyDTO hobbyDTO)
+        public async Task Update(HobbyDTO entity)
         {
-            var hobby = await _unitOfWork.HobbyRepository.GetById(hobbyDTO.Id);
+            var hobby = await _unitOfWork.HobbyRepository.GetById(entity.Id);
          
-            var hobbyUpdate = _mapper.Map<Hobby>(hobbyDTO);
+            var hobbyUpdate = _mapper.Map<Hobby>(entity);
 
-            if (hobbyDTO.MyHobby != hobby.MyHobby)
+            if (entity.MyHobby != hobby.MyHobby)
             {
-                hobby.MyHobby = hobbyDTO.MyHobby;           
+                hobby.MyHobby =entity.MyHobby;
                 _unitOfWork.HobbyRepository.Update(hobby);
                 await _unitOfWork.Commit();
             }

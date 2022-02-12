@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models.VMs;
+﻿using BusinessLayer.Services.BaseServices.Interface;
+using DataAccessLayer.Models.VMs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Interface
 {
-  public interface IEducationService
+  public interface IEducationService:IBaseService<EducationVM>
     {
-        Task<List<EducationVM>> GetAll();
+    
     }
 }

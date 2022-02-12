@@ -1,0 +1,46 @@
+﻿@model EducationVM
+
+<br />
+<form method="post" asp-controller="Education" asp-action="AddEducation">
+    <div>
+        <div>
+            <br />
+            <label asp-for="SchollName"> <b>Okul Adı:</b></label>
+            <input asp-for="SchollName" type="text" class="form-control" />
+            <span asp-validation-for="SchollName" class="text-danger"></span>
+
+            <br />
+            <br />
+            <label asp-for="Section"> <b>Bölüm:</b></label>
+            <input asp-for="Section" type="text" class="form-control" />
+            <span asp-validation-for="Section" class="text-danger"></span>
+
+            <br />
+            <br />
+            <label asp-for="NoteAverage"> <b>Ortalama:</b></label>
+            <input asp-for="NoteAverage" type="text" class="form-control" />
+            <span asp-validation-for="NoteAverage" class="text-danger"></span>
+
+            <br />
+            <br />
+            <label asp-for="Date"> <b>Tarih:</b></label>
+            <input asp-for="Date" type="text" class="form-control" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+
+            <br />
+            <br />
+
+
+
+
+
+        </div>
+    </div>
+
+    <br>
+
+    <button type="submit" href="/Education/AddEducation/" class="btn btn-outline-success"><b>Egitim Bilgisi Ekle</b></button>
+    <br />
+
+
+</form>

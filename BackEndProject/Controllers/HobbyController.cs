@@ -36,7 +36,7 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> AddHobby( HobbyDTO hobbyDTO)
         {
-            await _hobbyServices.AddHobby(hobbyDTO);
+            await _hobbyServices.Add(hobbyDTO);
             return RedirectToAction("Index");
         }
 
@@ -60,7 +60,7 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateHobby(HobbyDTO hobbyDTO)
         {
-            await _hobbyServices.EditHobby(hobbyDTO);
+            await _hobbyServices.Update(hobbyDTO);
             
             return RedirectToAction("Index");
         }

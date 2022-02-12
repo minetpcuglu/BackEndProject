@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Services.Interface;
+using DataAccessLayer.Models.VMs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,41 @@ namespace BackEndProject.Controllers
             var value = await _educationService.GetAll();
             return View(value);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> AddEducation()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddEducation(EducationVM educationVM)
+        {
+             await _educationService.Add(educationVM);
+            return RedirectToAction("GetList");
+        }
+
+        public async Task<IActionResult> DeleteEducation(int id)
+        {
+            await _educationService.Delete(id);
+            return RedirectToAction("Getlist");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditEducation(int id)
+        {
+            var value =  await _educationService.GetById(id);
+            return View(value);
+        }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> EditEducation(EducationVM educationVM)
+        //{
+        //  var value=  await _educationService
+        //    return RedirectToAction("GetList");
+        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models.DTOs;
+﻿using BusinessLayer.Services.BaseServices.Interface;
+using DataAccessLayer.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Interface
 {
-  public  interface IHobbyService
+  public  interface IHobbyService:IBaseService<HobbyDTO>
     {
-        Task<List<HobbyDTO>> GetAll();
-        Task AddHobby(HobbyDTO hobbyDTO);
-        Task<HobbyDTO> GetById(int id);
-        Task EditHobby(HobbyDTO hobbyDTO);
-        Task Delete(int id);
+      
 
 
     }
