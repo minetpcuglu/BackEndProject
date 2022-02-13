@@ -2,6 +2,7 @@
 using DataAccessLayer.Repositories.Concrete.EntityTypeRepositories;
 using DataAccessLayer.Repositories.Interface.EntityTypeRepositories;
 using DataAccessLayer.UnitOfWorks.Interface;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
     public class UnitOfWork : IUnitOfWork // => IUnitOfWork'den implement yolu ile gövdelendireceğim methodlar alındı
     {
         private readonly ApplicationDbContext _db;
+        //private  IDbContextTransaction  _transation;
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -48,6 +50,7 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
             {
                 if (_educationRepository == null) _educationRepository = new EducationRepository(_db);
                 return _educationRepository;
+               
             }
         }
 
@@ -64,14 +67,34 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
         public async Task Commit() => await _db.SaveChangesAsync();
 
 
-        private bool isDisposing = false;      //************sor
+        //public async Task<int> SaveChangesAsync()
+        //{
+        //    var transaction = _transation ??  _db.Database.BeginTransaction();
+        //    var count = 0;
+
+        //    using (transaction)
+        //    {
+        //        try
+        //        {
+        //            transaction.Commit();
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            transaction.Rollback();
+        //        }
+        //    }
+
+        //    return count;
+        //}
+
+        private bool isDisposing = false;       //************sor //commit işlemi için sanırım  sor ?
         public async ValueTask DisposeAsync()
         {
             if (!isDisposing)
             {
                 isDisposing = true;
                 await DisposeAsync(true);
-                GC.SuppressFinalize(this);// Nesnemizi tamamıyla temizlenmesini sağlayack.
+                GC.SuppressFinalize(this);    // Nesnemizi tamamıyla temizlenmesini sağlayack.
             }
         }
         private async Task DisposeAsync(bool disposing)

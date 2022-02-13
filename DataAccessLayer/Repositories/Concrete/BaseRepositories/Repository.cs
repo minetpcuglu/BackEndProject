@@ -15,13 +15,14 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
     public abstract class Repository<T> : IBaseRepositories<T> where T : class, IBaseEntity// => "IRepository"'de yazdığımız methodlara burada gövde kazandıracağız ve abstract olarak işaretlediğim "BaseRepository" sınıfını child sınıflarda çağıracağım.
     {
         private readonly ApplicationDbContext _context;
-        private DbSet<T> _table;
+        private readonly DbSet<T> _table;
 
         public Repository(ApplicationDbContext context)
         {
             this._context = context;
-            this._table = _context.Set<T>();
+            _table = _context.Set<T>();
         }
+
         public async Task insert(T t) => await _table.AddAsync(t);
         public void Delete(T t) =>  _table.Remove(t); //** 
 
@@ -37,9 +38,7 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
 
         public async Task<List<T>> GetListAll(Expression<Func<T, bool>> filter) => await _table.Where(filter).ToListAsync();
 
-        public async Task Update(T t) => _context.Entry(t).State = EntityState.Modified; //********
-      
-
+    
         public async Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> selector,
                                                           Expression<Func<T, bool>> expression = null,
                                                           Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null,
@@ -53,5 +52,15 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
             if (orderby != null) return await orderby(query).Select(selector).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             else return await query.Select(selector).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
+
+        public async Task Update(T t) =>  _context.Entry(t).State = EntityState.Modified; //********
+
+        //public async Task Update(T entity)
+        //{
+        //     _table.Update(entity);
+        //    await _context.SaveChangesAsync();
+        //}
+
+        public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression) => await _table.Where(expression).FirstOrDefaultAsync();
     }
 }

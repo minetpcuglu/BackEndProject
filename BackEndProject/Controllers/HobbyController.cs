@@ -13,11 +13,11 @@ namespace BackEndProject.Controllers
     public class HobbyController : Controller
     {
         private readonly IHobbyService _hobbyServices;
-   
-        public HobbyController(IHobbyService hobbyService )
+
+        public HobbyController(IHobbyService hobbyService)
         {
             _hobbyServices = hobbyService;
-           
+
         }
 
         public async Task<IActionResult> Index()
@@ -26,7 +26,7 @@ namespace BackEndProject.Controllers
             return View(list);
         }
 
-       [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> AddHobby()
         {
             return View();
@@ -34,7 +34,7 @@ namespace BackEndProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddHobby( HobbyDTO hobbyDTO)
+        public async Task<IActionResult> AddHobby(HobbyDTO hobbyDTO)
         {
             await _hobbyServices.Add(hobbyDTO);
             return RedirectToAction("Index");
@@ -43,8 +43,7 @@ namespace BackEndProject.Controllers
 
         public async Task<IActionResult> DeleteHobby(int id)
         {
-            var value = await _hobbyServices.GetById(id);
-           await _hobbyServices.Delete(id);
+            await _hobbyServices.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -52,7 +51,7 @@ namespace BackEndProject.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateHobby(int id)
         {
-           var value = await _hobbyServices.GetById(id);
+            var value = await _hobbyServices.GetById(id);
             return View(value);
         }
 
@@ -60,12 +59,10 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateHobby(HobbyDTO hobbyDTO)
         {
-            await _hobbyServices.Update(hobbyDTO);
-            
+           await _hobbyServices.Update(hobbyDTO);
+
             return RedirectToAction("Index");
         }
 
-
-       
     }
 }

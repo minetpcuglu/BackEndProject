@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using BusinessLayer.Services.BaseServices.Interface;
 using BusinessLayer.Services.Interface;
+using DataAccessLayer.Context;
 using DataAccessLayer.Models.VMs;
+using DataAccessLayer.Repositories.Interface.EntityTypeRepositories;
 using DataAccessLayer.UnitOfWorks.Interface;
 using EntityLayer.Entities.Concrete;
 using System;
@@ -13,12 +16,16 @@ namespace BusinessLayer.Services.Concrete
 {
     public class EducationService : IEducationService
     {
+        private readonly IEducationRepository _educationRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public EducationService(IMapper mapper, IUnitOfWork unitOfWork)
+        public EducationService(IMapper mapper, IUnitOfWork unitOfWork, IEducationRepository educationRepository, ApplicationDbContext applicationDbContext)
         {
+            _context = applicationDbContext;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _educationRepository = educationRepository;
 
         }
 
@@ -29,7 +36,7 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-      
+
 
         public async Task Delete(int id)
         {
@@ -38,7 +45,7 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-     
+
 
         public async Task<List<EducationVM>> GetAll()
         {
@@ -54,12 +61,54 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<EducationVM>(educationGet);
         }
 
+        //public async Task<bool> Update(EducationVM entity)
+        //{
+        //    var educationGet = await _unitOfWork.EducationRepository.FirstOrDefault(x => x.Id == entity.Id);
+        //    if(educationGet != null)
+        //    {
+               
+        //        await _educationRepository.Update(educationGet);
+
+        //        await _unitOfWork.Commit();
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
         public async Task Update(EducationVM entity)
         {
-            var educationGet= await _unitOfWork.EducationRepository.GetById(entity.Id);
-            var hobbyUpdate = _mapper.Map<EducationVM>(entity);
-            await _unitOfWork.EducationRepository.Update(educationGet);
-            await _unitOfWork.Commit();
+            var education = await _unitOfWork.EducationRepository.GetById(entity.Id);
+
+            var educationUpdate = _mapper.Map<Education>(entity);
+
+            if (entity.SchollName != education.SchollName )
+            {
+                education.SchollName = entity.SchollName;
+                await _unitOfWork.EducationRepository.Update(education);
+                await _unitOfWork.Commit();
+            }
+            if (entity.Section != education.Section)
+            {
+                education.Section = entity.Section;
+                await _unitOfWork.EducationRepository.Update(education);
+                await _unitOfWork.Commit();
+            }
+            if (entity.NoteAverage != education.NoteAverage)
+            {
+                education.NoteAverage = entity.NoteAverage;
+                await _unitOfWork.EducationRepository.Update(education);
+                await _unitOfWork.Commit();
+            }
+            if (entity.Date != education.Date)
+            {
+                education.Date = entity.Date;
+                await _unitOfWork.EducationRepository.Update(education);
+                await _unitOfWork.Commit();
+            }
+
         }
+
+
     }
 }

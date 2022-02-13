@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BusinessLayer.Services.BaseServices.Interface;
 using BusinessLayer.Services.Interface;
+using DataAccessLayer.Context;
 using DataAccessLayer.Models.DTOs;
 using DataAccessLayer.Repositories.Interface.EntityTypeRepositories;
 using DataAccessLayer.UnitOfWorks.Interface;
@@ -13,27 +15,25 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services.Concrete
 {
-    public class HobbyService : IHobbyService
+    public class HobbyService :IHobbyService
     {
-        private readonly IHobbyRepository _hobbyRepository;
+        private readonly IEducationRepository _educationRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private ApplicationDbContext _context;
         private readonly IMapper _mapper;
-
-        public HobbyService( IHobbyRepository hobbyRepository, IMapper mapper,IUnitOfWork unitOfWork)
+        public HobbyService(IMapper mapper, IUnitOfWork unitOfWork, IEducationRepository educationRepository, ApplicationDbContext applicationDbContext)
         {
-            _hobbyRepository = hobbyRepository;
-            _unitOfWork = unitOfWork;
+            _context = applicationDbContext;
             _mapper = mapper;
-        }
+            _unitOfWork = unitOfWork;
+            _educationRepository = educationRepository;
 
-      
+        }
 
         public async Task Add(HobbyDTO hobbyDTO)
         { 
             var addHobby = _mapper.Map<HobbyDTO, Hobby>(hobbyDTO);
-       
             await _unitOfWork.HobbyRepository.insert(addHobby);
-   
             await _unitOfWork.Commit();
         }
 
@@ -46,23 +46,29 @@ namespace BusinessLayer.Services.Concrete
 
         public async Task Update(HobbyDTO entity)
         {
-            var hobby = await _unitOfWork.HobbyRepository.GetById(entity.Id);
-         
-            var hobbyUpdate = _mapper.Map<Hobby>(entity);
+            //var hobby = _unitOfWork.HobbyRepository.GetById(entity.Id);
+            Hobby hobby = _context.Hobbies.Find(entity.Id);
+            _mapper.Map<HobbyDTO>(entity);
+           await _unitOfWork.HobbyRepository.Update(hobby);
 
-            if (entity.MyHobby != hobby.MyHobby)
-            {
-                hobby.MyHobby =entity.MyHobby;
-                _unitOfWork.HobbyRepository.Update(hobby);
-                await _unitOfWork.Commit();
-            }
+            //hobby.MyHobby =entity.MyHobby;
+
+           await _unitOfWork.Commit();
+
 
         }
 
+    //    public ActionResult Edit(PatientView viewModel)
+    //    {
+    //        Patient patient = db.Patients.Find(viewModel.Id);
+    //        Mapper.Map(viewModel, patient);
+    //        ...
+    //db.SaveChanges();
+    //        return RedirectToAction("Index");
+    //    }
+
         public async Task<List<HobbyDTO>> GetAll()
         {
-          
-
             var hobbyList = await _unitOfWork.HobbyRepository.GetAll();
             var list = _mapper.Map<List<HobbyDTO>>(hobbyList);
             await _unitOfWork.Commit();
@@ -78,6 +84,9 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<HobbyDTO>(hobby);
         }
 
-
+       
     }
 }
+#region
+// Bu kodu yazan kör oldu
+#endregion

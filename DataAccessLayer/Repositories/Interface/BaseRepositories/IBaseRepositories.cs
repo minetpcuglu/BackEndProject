@@ -15,6 +15,7 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
         Task insert(T t);
         void Delete(T t);
         Task Update(T t);
+        Task<T> FirstOrDefault(Expression<Func<T, bool>> expression);
         Task<List<T>> GetAll(); // Asenkron programlama yapmak istediğimiz methodlarımızı "TASK" olarak işaretlenir.
         Task<List<T>> GetListAll(Expression<Func<T, bool>> filter);  //filter 
         Task<T> Get(Expression<Func<T, bool>> filter);  //dışarıdann bir şart alıcak
@@ -29,9 +30,9 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
                                                      bool disableTracing = true,
                                                      int pageIndex = 1,
                                                      int pageSize = 3);
-         Task<T> GetById(int id);
+        Task<T> GetById(int id);
 
 
-  
+
     }
 }
