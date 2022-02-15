@@ -17,16 +17,16 @@ namespace BusinessLayer.Services.Concrete
 {
     public class HobbyService :IHobbyService
     {
-        private readonly IEducationRepository _educationRepository;
+        private readonly IHobbyRepository _hobbyRepository;
         private readonly IUnitOfWork _unitOfWork;
         private ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public HobbyService(IMapper mapper, IUnitOfWork unitOfWork, IEducationRepository educationRepository, ApplicationDbContext applicationDbContext)
+        public HobbyService(IMapper mapper, IUnitOfWork unitOfWork, IHobbyRepository hobbyRepository, ApplicationDbContext applicationDbContext)
         {
             _context = applicationDbContext;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _educationRepository = educationRepository;
+            _hobbyRepository = hobbyRepository;
 
         }
 
@@ -46,26 +46,18 @@ namespace BusinessLayer.Services.Concrete
 
         public async Task Update(HobbyDTO entity)
         {
-            //var hobby = _unitOfWork.HobbyRepository.GetById(entity.Id);
-            Hobby hobby = _context.Hobbies.Find(entity.Id);
-            _mapper.Map<HobbyDTO>(entity);
-           await _unitOfWork.HobbyRepository.Update(hobby);
+            var hobbyUpdate = _mapper.Map<HobbyDTO,Hobby>(entity);
 
-            //hobby.MyHobby =entity.MyHobby;
-
-           await _unitOfWork.Commit();
+            if (hobbyUpdate.Id != 0)
+            {
+                await _hobbyRepository.Update(hobbyUpdate);
+                await _unitOfWork.SaveChangesAsync();
+            }
 
 
         }
 
-    //    public ActionResult Edit(PatientView viewModel)
-    //    {
-    //        Patient patient = db.Patients.Find(viewModel.Id);
-    //        Mapper.Map(viewModel, patient);
-    //        ...
-    //db.SaveChanges();
-    //        return RedirectToAction("Index");
-    //    }
+   
 
         public async Task<List<HobbyDTO>> GetAll()
         {
@@ -87,6 +79,3 @@ namespace BusinessLayer.Services.Concrete
        
     }
 }
-#region
-// Bu kodu yazan kör oldu
-#endregion

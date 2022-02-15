@@ -28,7 +28,7 @@ namespace BackEndProject.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> AddEducation()
+        public IActionResult AddEducation()
         {
             return View();
         }
@@ -58,8 +58,10 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> EditEducation(EducationVM educationVM)
         {
-             await _educationService.Update(educationVM);
+            await _educationService.Update(educationVM);
             return RedirectToAction("GetList");
         }
+
+
     }
 }

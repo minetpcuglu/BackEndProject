@@ -61,50 +61,15 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<EducationVM>(educationGet);
         }
 
-        //public async Task<bool> Update(EducationVM entity)
-        //{
-        //    var educationGet = await _unitOfWork.EducationRepository.FirstOrDefault(x => x.Id == entity.Id);
-        //    if(educationGet != null)
-        //    {
-               
-        //        await _educationRepository.Update(educationGet);
-
-        //        await _unitOfWork.Commit();
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
+       
 
         public async Task Update(EducationVM entity)
         {
-            var education = await _unitOfWork.EducationRepository.GetById(entity.Id);
-
-            var educationUpdate = _mapper.Map<Education>(entity);
-
-            if (entity.SchollName != education.SchollName )
+            var educationUpdate = _mapper.Map<EducationVM,Education>(entity);
+            if (educationUpdate.Id !=0)
             {
-                education.SchollName = entity.SchollName;
-                await _unitOfWork.EducationRepository.Update(education);
-                await _unitOfWork.Commit();
-            }
-            if (entity.Section != education.Section)
-            {
-                education.Section = entity.Section;
-                await _unitOfWork.EducationRepository.Update(education);
-                await _unitOfWork.Commit();
-            }
-            if (entity.NoteAverage != education.NoteAverage)
-            {
-                education.NoteAverage = entity.NoteAverage;
-                await _unitOfWork.EducationRepository.Update(education);
-                await _unitOfWork.Commit();
-            }
-            if (entity.Date != education.Date)
-            {
-                education.Date = entity.Date;
-                await _unitOfWork.EducationRepository.Update(education);
-                await _unitOfWork.Commit();
+                await _educationRepository.Update(educationUpdate);
+                await _unitOfWork.SaveChangesAsync();
             }
 
         }

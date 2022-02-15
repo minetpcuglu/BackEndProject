@@ -53,13 +53,13 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
             else return await query.Select(selector).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-        public async Task Update(T t) =>  _context.Entry(t).State = EntityState.Modified; //********
+        //public async Task Update(T t) =>  _context.Entry(t).State = EntityState.Modified; //********
 
-        //public async Task Update(T entity)
-        //{
-        //     _table.Update(entity);
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task Update(T t)
+        {
+            _table.Update(t);
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<T> FirstOrDefault(Expression<Func<T, bool>> expression) => await _table.Where(expression).FirstOrDefaultAsync();
     }

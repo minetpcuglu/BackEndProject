@@ -14,7 +14,7 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
     public class UnitOfWork : IUnitOfWork // => IUnitOfWork'den implement yolu ile gövdelendireceğim methodlar alındı
     {
         private readonly ApplicationDbContext _db;
-        //private  IDbContextTransaction  _transation;
+        private IDbContextTransaction _transation;
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -67,25 +67,25 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
         public async Task Commit() => await _db.SaveChangesAsync();
 
 
-        //public async Task<int> SaveChangesAsync()
-        //{
-        //    var transaction = _transation ??  _db.Database.BeginTransaction();
-        //    var count = 0;
+        public async Task<int> SaveChangesAsync()
+        {
+            var transaction = _transation ?? _db.Database.BeginTransaction();
+            var count = 0;
 
-        //    using (transaction)
-        //    {
-        //        try
-        //        {
-        //            transaction.Commit();
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            transaction.Rollback();
-        //        }
-        //    }
+            using (transaction)
+            {
+                try
+                {
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                }
+            }
 
-        //    return count;
-        //}
+            return count;
+        }
 
         private bool isDisposing = false;       //************sor //commit işlemi için sanırım  sor ?
         public async ValueTask DisposeAsync()
