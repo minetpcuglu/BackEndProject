@@ -1,7 +1,10 @@
 ﻿
 using AutoMapper;
 using BusinessLayer.Services.Interface;
+using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Models.DTOs;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,10 +16,12 @@ namespace BackEndProject.Controllers
     public class HobbyController : Controller
     {
         private readonly IHobbyService _hobbyServices;
+        private readonly IValidator<HobbyDTO> _hobbyValidator;
 
-        public HobbyController(IHobbyService hobbyService)
+        public HobbyController(IHobbyService hobbyService, IValidator<HobbyDTO> hobbyValidator)
         {
             _hobbyServices = hobbyService;
+            _hobbyValidator = hobbyValidator;
 
         }
 
@@ -27,7 +32,7 @@ namespace BackEndProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddHobby()
+        public IActionResult AddHobby()
         {
             return View();
         }
@@ -36,8 +41,18 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> AddHobby(HobbyDTO hobbyDTO)
         {
-            await _hobbyServices.Add(hobbyDTO);
-            return RedirectToAction("Index");
+            var validateResult = _hobbyValidator.Validate(hobbyDTO);
+            if (validateResult.IsValid)
+            {
+             await   _hobbyServices.Add(hobbyDTO);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var error in validateResult.Errors) ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return View(hobbyDTO);
         }
 
 
@@ -59,7 +74,7 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateHobby(HobbyDTO hobbyDTO)
         {
-           await _hobbyServices.Update(hobbyDTO);
+            await _hobbyServices.Update(hobbyDTO);
 
             return RedirectToAction("Index");
         }

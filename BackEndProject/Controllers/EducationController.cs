@@ -48,7 +48,7 @@ namespace BackEndProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditEducation(int id)
+        public async Task<IActionResult> UpdateEducation(int id)
         {
             var value =  await _educationService.GetById(id);
             return View(value);
@@ -56,7 +56,7 @@ namespace BackEndProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> EditEducation(EducationVM educationVM)
+        public async Task<IActionResult> UpdateEducation(EducationVM educationVM)
         {
             await _educationService.Update(educationVM);
             return RedirectToAction("GetList");

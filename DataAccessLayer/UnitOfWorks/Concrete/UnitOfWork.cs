@@ -69,7 +69,7 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
 
         public async Task<int> SaveChangesAsync()
         {
-            var transaction = _transation ?? _db.Database.BeginTransaction();
+            var transaction =  _transation ?? _db.Database.BeginTransaction();
             var count = 0;
 
             using (transaction)

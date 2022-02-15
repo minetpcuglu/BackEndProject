@@ -1,6 +1,6 @@
 ﻿@model EducationVM
 
-<form method="post" asp-controller="Education" asp-action="EditEducation">
+<form method="post" asp-controller="Education" asp-action="UpdateEducation">
     <div class="row">
         <div class="col-md-12">
             <div asp-validation-summary="All"></div>
@@ -16,7 +16,6 @@
                 <label asp-for="Section"><b> Bölüm: </b>  </label>
                 <input asp-for="Section" class="form-control" value="@Model.Section" />
                 <span asp-validation-for="Section" class="text-danger"></span>
-
             </div>
             <br />
             <div class="form-group">
