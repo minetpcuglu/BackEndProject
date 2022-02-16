@@ -4,6 +4,7 @@ using BusinessLayer.Services.Interface;
 using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Context;
 using DataAccessLayer.Models.DTOs;
+using DataAccessLayer.Models.VMs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,8 @@ namespace BackEndProject
             services.AddScoped<IEducationService, EducationService>(); /// dý 
             services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacaðýmýz için Validator sýnýfýmýzý ve servisimizi inject ediyoruz.
             services.AddSingleton<IHobbyService, HobbyService>(); //fluent validation 
+            services.AddSingleton<IValidator<EducationVM>, EducationValidation>(); 
+            services.AddSingleton<IEducationService, EducationService>(); 
             services.AddAutoMapper(typeof(HobbyMapping));
             services.AddAutoMapper(typeof(EducationMapping));
 

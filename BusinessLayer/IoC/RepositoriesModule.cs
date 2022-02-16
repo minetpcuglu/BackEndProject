@@ -9,7 +9,7 @@ using DataAccessLayer.UnitOfWorks.Interface;
 
 namespace BusinessLayer.IoC
 {
-   public class RepositoriesModule : Module
+   public class RepositoriesModule : Module //UnitOfWork için bagımlılıklardan kurtulmak amacıyla IoC Containerlardan yardım almak 
     {
         protected override void Load(ContainerBuilder builder)
         {

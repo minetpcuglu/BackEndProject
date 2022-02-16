@@ -74,9 +74,21 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateHobby(HobbyDTO hobbyDTO)
         {
-            await _hobbyServices.Update(hobbyDTO);
 
-            return RedirectToAction("Index");
+
+            var validateResult = _hobbyValidator.Validate(hobbyDTO);
+            if (validateResult.IsValid)
+            {
+                await _hobbyServices.Update(hobbyDTO);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var error in validateResult.Errors) ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return View(hobbyDTO);
+  
         }
 
     }

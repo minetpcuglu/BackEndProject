@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Services.Interface;
 using DataAccessLayer.Models.VMs;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,10 @@ namespace BackEndProject.Controllers
     public class EducationController : Controller
     {
         private readonly IEducationService _educationService;
-        public EducationController(IEducationService educationService)
+        private readonly IValidator<EducationVM> _educationValidator;
+        public EducationController(IEducationService educationService, IValidator<EducationVM> educationValidator)
         {
+            _educationValidator = educationValidator;
             _educationService = educationService;
         }
         public IActionResult Index()
@@ -37,8 +40,18 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEducation(EducationVM educationVM)
         {
-             await _educationService.Add(educationVM);
-            return RedirectToAction("GetList");
+            var validateResult = _educationValidator.Validate(educationVM);
+            if (validateResult.IsValid)
+            {
+                await _educationService.Add(educationVM);
+                return RedirectToAction("GetList");
+            }
+            else
+            {
+                foreach (var error in validateResult.Errors) ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return View(educationVM);
         }
 
         public async Task<IActionResult> DeleteEducation(int id)
@@ -50,7 +63,9 @@ namespace BackEndProject.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateEducation(int id)
         {
-            var value =  await _educationService.GetById(id);
+
+
+            var value = await _educationService.GetById(id);
             return View(value);
         }
 
@@ -58,8 +73,19 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateEducation(EducationVM educationVM)
         {
-            await _educationService.Update(educationVM);
-            return RedirectToAction("GetList");
+            var validateResult = _educationValidator.Validate(educationVM);
+            if (validateResult.IsValid)
+            {
+                await _educationService.Update(educationVM);
+                return RedirectToAction("GetList");
+            }
+            else
+            {
+                foreach (var error in validateResult.Errors) ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+
+            return View(educationVM);
+ 
         }
 
 
