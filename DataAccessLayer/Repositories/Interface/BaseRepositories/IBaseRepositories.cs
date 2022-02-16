@@ -12,7 +12,7 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
     // Repository: Temel olarak veritabanı sorgulama işlemlerinin bir merkezden yapılmasını sağlar kod tekrarını önler.
     public interface IBaseRepositories<T> where T : class, IBaseEntity
     {
-        Task insert(T t);
+        Task Insert(T t);
         void Delete(T t);
         Task Update(T t);
         Task<T> FirstOrDefault(Expression<Func<T, bool>> expression);

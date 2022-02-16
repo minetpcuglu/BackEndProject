@@ -23,7 +23,7 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
             _table = _context.Set<T>();
         }
 
-        public async Task insert(T t) => await _table.AddAsync(t);
+        public async Task Insert(T t) => await _table.AddAsync(t);
         public void Delete(T t) =>  _table.Remove(t); //** 
 
         public async Task<T> Get(Expression<Func<T, bool>> filter) => await _table.Where(filter).FirstOrDefaultAsync();

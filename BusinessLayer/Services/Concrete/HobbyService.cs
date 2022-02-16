@@ -33,7 +33,7 @@ namespace BusinessLayer.Services.Concrete
         public async Task Add(HobbyDTO hobbyDTO)
         { 
             var addHobby = _mapper.Map<HobbyDTO, Hobby>(hobbyDTO);
-            await _unitOfWork.HobbyRepository.insert(addHobby);
+            await _unitOfWork.HobbyRepository.Insert(addHobby);
             await _unitOfWork.Commit();
         }
 

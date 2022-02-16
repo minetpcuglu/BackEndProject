@@ -29,7 +29,7 @@ namespace BusinessLayer.Services.Concrete
         public async Task Add(EducationVM entity)
         {
             var addEducation = _mapper.Map<EducationVM, Education>(entity);
-            await _unitOfWork.EducationRepository.insert(addEducation);
+            await _unitOfWork.EducationRepository.Insert(addEducation);
             await _unitOfWork.Commit();
         }
 
