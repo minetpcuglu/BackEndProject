@@ -31,8 +31,5 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
                                                      int pageIndex = 1,
                                                      int pageSize = 3);
         Task<T> GetById(int id);
-
-
-
     }
 }

@@ -18,15 +18,12 @@ namespace BusinessLayer.Services.Concrete
     {
         private readonly IEducationRepository _educationRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public EducationService(IMapper mapper, IUnitOfWork unitOfWork, IEducationRepository educationRepository, ApplicationDbContext applicationDbContext)
+        public EducationService(IMapper mapper, IUnitOfWork unitOfWork, IEducationRepository educationRepository)
         {
-            _context = applicationDbContext;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _educationRepository = educationRepository;
-
         }
 
         public async Task Add(EducationVM entity)
@@ -36,8 +33,6 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-
-
         public async Task Delete(int id)
         {
             var deleteEducation = await _unitOfWork.EducationRepository.Get(x => x.Id == id);
@@ -45,13 +40,11 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-
-
         public async Task<List<EducationVM>> GetAll()
         {
             var educationList = await _unitOfWork.EducationRepository.GetAll();
             var list = _mapper.Map<List<EducationVM>>(educationList);
-            await _unitOfWork.Commit();
+           
             return list;
         }
 
@@ -61,8 +54,6 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<EducationVM>(educationGet);
         }
 
-       
-
         public async Task Update(EducationVM entity)
         {
             var educationUpdate = _mapper.Map<EducationVM,Education>(entity);
@@ -71,9 +62,6 @@ namespace BusinessLayer.Services.Concrete
                 await _educationRepository.Update(educationUpdate);
                 await _unitOfWork.SaveChangesAsync();
             }
-
         }
-
-
     }
 }

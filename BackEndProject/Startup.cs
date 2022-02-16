@@ -43,10 +43,8 @@ namespace BackEndProject
 
             services.AddScoped<IHobbyService, HobbyService>(); /// dý 
             services.AddScoped<IEducationService, EducationService>(); /// dý 
-            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacaðýmýz için Validator sýnýfýmýzý ve servisimizi inject ediyoruz.
-            services.AddSingleton<IHobbyService, HobbyService>(); //fluent validation 
-            services.AddSingleton<IValidator<EducationVM>, EducationValidation>(); 
-            services.AddSingleton<IEducationService, EducationService>(); 
+            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacaðýmýz için Validator sýnýfýmýzý ve servisimizi inject ediyoruz. 
+            services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
             services.AddAutoMapper(typeof(HobbyMapping));
             services.AddAutoMapper(typeof(EducationMapping));
 

@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Services.Interface;
+using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Models.VMs;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,10 @@ namespace BackEndProject.Controllers
 {
     public class EducationController : Controller
     {
+       
         private readonly IEducationService _educationService;
         private readonly IValidator<EducationVM> _educationValidator;
-        public EducationController(IEducationService educationService, IValidator<EducationVM> educationValidator)
+        public EducationController(IEducationService educationService,  IValidator<EducationVM> educationValidator)
         {
             _educationValidator = educationValidator;
             _educationService = educationService;
@@ -83,9 +85,7 @@ namespace BackEndProject.Controllers
             {
                 foreach (var error in validateResult.Errors) ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
             }
-
             return View(educationVM);
- 
         }
 
 
