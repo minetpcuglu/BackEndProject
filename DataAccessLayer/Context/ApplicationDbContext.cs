@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Mapping.Concrete;
 using EntityLayer.Entities.Concrete;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Context
 {
-  public class ApplicationDbContext:DbContext
+  public class ApplicationDbContext: IdentityDbContext<AppUser,AppRole,int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { } // =>  "DB bağlantısını concructor method ile oluşturuldu."
 
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<AppRole> AppRoles  { get; set; }
         public DbSet<Award> Awards { get; set; }
         public DbSet<About> Abouts { get; set; }
         public DbSet<Education> Educations { get; set; }

@@ -5,6 +5,7 @@ using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Context;
 using DataAccessLayer.Models.DTOs;
 using DataAccessLayer.Models.VMs;
+using EntityLayer.Entities.Concrete;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -34,7 +35,8 @@ namespace BackEndProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ApplicationDbContext>();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //uygulamaya geliþtirdiðimiz context nesnesi DbContext olarak tanýtýlmaktadýr.
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<ApplicationDbContext>(); //identity yapýlanmasýna dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleþtirmekteyiz.
             services.AddControllersWithViews();
             services.AddControllers().AddFluentValidation(fv =>
             {
@@ -64,11 +66,14 @@ namespace BackEndProject
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication(); //identity
 
             app.UseEndpoints(endpoints =>
             {
