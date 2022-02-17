@@ -28,6 +28,7 @@ namespace DataAccessLayer.Context
             builder.ApplyConfiguration(new EducationMap());
             builder.ApplyConfiguration(new HobbyMap());
             builder.ApplyConfiguration(new AwardMap());
+         
        
             base.OnModelCreating(builder);
         }

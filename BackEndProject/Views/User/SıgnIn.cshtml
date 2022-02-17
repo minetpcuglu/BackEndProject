@@ -1,0 +1,31 @@
+﻿@model AppUserViewModel
+
+
+<h3>Üye Ol</h3>
+
+<hr />
+<form asp-action="SıgnIn">
+    <table>
+        <tr>
+            <td colspan="3"><div asp-validation-summary="ModelOnly"></div></td>
+        </tr>
+        <tr>
+            <td><label asp-for="UserName"></label></td>
+            <td><input asp-for="UserName" /></td>
+            <td><span asp-validation-for="UserName"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Email"></label></td>
+            <td><input asp-for="Email" /></td>
+            <td><span asp-validation-for="Email"></span></td>
+        </tr>
+        <tr>
+            <td><label asp-for="Sifre"></label></td>
+            <td><input asp-for="Sifre" /></td>
+            <td><span asp-validation-for="Sifre"></span></td>
+        </tr>
+        <tr>
+            <td colspan="3"><input type="submit" value="Üye Ol" /></td>
+        </tr>
+    </table>
+</form>

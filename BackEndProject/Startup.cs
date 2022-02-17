@@ -42,12 +42,23 @@ namespace BackEndProject
             {
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            //    options.LoginPath = “/Identity/Account/Login”;
+            //    options.AccessDeniedPath = “/Identity/Account/AccessDenied”;
+            //    options.SlidingExpiration = true;
+            //});
 
             services.AddScoped<IHobbyService, HobbyService>(); /// dý 
             services.AddScoped<IEducationService, EducationService>(); /// dý 
+           
             services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacaðýmýz için Validator sýnýfýmýzý ve servisimizi inject ediyoruz. 
             services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
             services.AddAutoMapper(typeof(HobbyMapping));
+            services.AddAutoMapper(typeof(UserMapping));
             services.AddAutoMapper(typeof(EducationMapping));
 
         }
