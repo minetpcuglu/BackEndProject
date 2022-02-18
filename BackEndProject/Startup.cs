@@ -1,4 +1,4 @@
-using BusinessLayer.AutoMapper;
+﻿using BusinessLayer.AutoMapper;
 using BusinessLayer.Services.Concrete;
 using BusinessLayer.Services.Interface;
 using BusinessLayer.Validation.FluentValidation;
@@ -35,27 +35,37 @@ namespace BackEndProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ApplicationDbContext>();
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //uygulamaya geli�tirdi�imiz context nesnesi DbContext olarak tan�t�lmaktad�r.
-            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<ApplicationDbContext>(); //identity yap�lanmas�na dair gerekli entegrasyonu �AddIdentity� metodu ile ger�ekle�tirmekteyiz.
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //uygulamaya geliştirdiğimiz context nesnesi DbContext olarak tanıtılmaktadır.
+            services.AddIdentity<AppUser, AppRole>
+                (x =>
+                {
+                    x.Password.RequireLowercase = false; // =>özelliði; þifre içerisinde en az 1 adet küçük harf zorunluluðu olmasý özelliðini false yaptýk.
+                    x.Password.RequireUppercase = false; // => özelliði; þifre içerisinde en az 1 adet büyük harf zorunluluðu olmasýný false yaptýk.
+                    x.Password.RequireNonAlphanumeric = false; // =>  özelliði; þifre içerisinde en az 1 adet alfanümerik karakter zorunluluðu olmasý özelliði false.
+                })
+            .AddEntityFrameworkStores<ApplicationDbContext>(); //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
             services.AddControllersWithViews();
             services.AddControllers().AddFluentValidation(fv =>
             {
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
+
+
+
             //services.ConfigureApplicationCookie(options =>
             //{
             //    // Cookie settings
             //    options.Cookie.HttpOnly = true;
             //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.LoginPath = �/Identity/Account/Login�;
-            //    options.AccessDeniedPath = �/Identity/Account/AccessDenied�;
+            //    options.LoginPath = “/Identity/Account/Login”;
+            //    options.AccessDeniedPath = “/Identity/Account/AccessDenied”;
             //    options.SlidingExpiration = true;
             //});
 
-            services.AddScoped<IHobbyService, HobbyService>(); /// d� 
-            services.AddScoped<IEducationService, EducationService>(); /// d� 
-           
-            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanaca��m�z i�in Validator s�n�f�m�z� ve servisimizi inject ediyoruz. 
+            services.AddScoped<IHobbyService, HobbyService>(); /// dı 
+            services.AddScoped<IEducationService, EducationService>(); /// dı 
+
+            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacağımız için Validator sınıfımızı ve servisimizi inject ediyoruz. 
             services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
             services.AddAutoMapper(typeof(HobbyMapping));
             services.AddAutoMapper(typeof(UserMapping));

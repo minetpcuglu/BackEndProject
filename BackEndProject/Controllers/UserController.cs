@@ -19,6 +19,7 @@ namespace BackEndProject.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
+    
         public IActionResult Index()
         {
             return View(_userManager.Users);
@@ -35,12 +36,12 @@ namespace BackEndProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var appUser = _mapper.Map<AppUserViewModel, AppUser>(appUserViewModel);
-                AppUser appUser = new AppUser
-                {
-                    UserName = appUserViewModel.UserName,
-                    Email = appUserViewModel.Email
-                };
+                var appUser = _mapper.Map<AppUserViewModel, AppUser>(appUserViewModel);
+                //AppUser appUser = new AppUser
+                //{
+                //    UserName = appUserViewModel.UserName,
+                //    Email = appUserViewModel.Email
+                //};
                 IdentityResult result = await _userManager.CreateAsync(appUser, appUserViewModel.Sifre);
                 if (result.Succeeded)
                     return RedirectToAction("Index");

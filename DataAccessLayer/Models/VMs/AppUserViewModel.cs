@@ -19,7 +19,7 @@ namespace DataAccessLayer.Models.VMs
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Lütfen şifreyi boş geçmeyiniz...")]
-        //[DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
+        [DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
         [Display(Name = "Şifre")]
         public string Sifre { get; set; }
     }
