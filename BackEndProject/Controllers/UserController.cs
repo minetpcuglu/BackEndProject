@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Models.VMs;
 using EntityLayer.Entities.Concrete;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,11 +21,14 @@ namespace BackEndProject.Controllers
             _userManager = userManager;
         }
     
+        [Authorize]
         public IActionResult Index()
         {
             return View(_userManager.Users);
         }
 
+        
+        
         [HttpGet]
         public IActionResult SıgnIn()
         {
@@ -53,6 +57,8 @@ namespace BackEndProject.Controllers
             
             
         }
+
+
 
 
     }

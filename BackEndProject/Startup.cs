@@ -9,9 +9,12 @@ using DataAccessLayer.Models.VMs;
 using EntityLayer.Entities.Concrete;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,44 +38,85 @@ namespace BackEndProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region context
             services.AddTransient<ApplicationDbContext>();
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //uygulamaya geliştirdiğimiz context nesnesi DbContext olarak tanıtılmaktadır.
-            services.AddIdentity<AppUser, AppRole>
-                (x =>
-                {
-                    x.Password.RequireNonAlphanumeric = false; //Alfanumerik zorunluluğunu kaldırıyoruz.
-                    x.Password.RequireLowercase = false; //Küçük harf zorunluluğunu kaldırıyoruz.
-                    x.Password.RequireUppercase = false; //Büyük harf zorunluluğunu kaldırıyoruz.
-                    x.Password.RequireDigit = false; //0-9 arası sayısal karakter zorunluluğu 
-                    x.User.RequireUniqueEmail = false; //Email adreslerini tekilleştiriyoruz.
+            #endregion
 
-                    //x.User.AllowedUserNameCharacters = "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+"; //Kullanıcı adında geçerli olan karakterleri belirtiyoruz.
-               
-                }).AddPasswordValidator<CustomPasswordValidation>()
-          .AddUserValidator<CustomUserValidation>()
-          .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<ApplicationDbContext>(); //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
+            #region Identity ValidatorRules
+            services.AddIdentity<AppUser, AppRole>
+               (x =>
+               {
+                   x.Password.RequireNonAlphanumeric = false; //Alfanumerik zorunluluğunu kaldırıyoruz.
+                   x.Password.RequireLowercase = false; //Küçük harf zorunluluğunu kaldırıyoruz.
+                   x.Password.RequireUppercase = false; //Büyük harf zorunluluğunu kaldırıyoruz.
+                   x.Password.RequireDigit = false; //0-9 arası sayısal karakter zorunluluğu 
+                   x.User.RequireUniqueEmail = false; //Email adreslerini tekilleştiriyoruz.
+
+                   //x.User.AllowedUserNameCharacters = "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+"; //Kullanıcı adında geçerli olan karakterleri belirtiyoruz.
+
+               }).AddPasswordValidator<CustomPasswordValidation>()
+         .AddUserValidator<CustomUserValidation>()
+         .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();//(şifremi unuttum!)  //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
 
             //böylece hem password hemde user temelli custom validasyon yapılanması sağlanmış bulunmaktadır.
+            #endregion
 
 
-            //services.AddMvc();
+
+            #region Cookie
+            //services.ConfigureApplicationCookie(x =>
+            //{
+            //    x.LoginPath = new PathString("/Login/UserLogin");
+            //    x.Cookie = new CookieBuilder
+            //    {
+            //        Name = "CoreIdentityCookie", //Oluşturulacak Cookie'yi isimlendiriyoruz.
+            //        HttpOnly = false, //Kötü niyetli insanların client-side(istemci) tarafından Cookie'ye erişmesini engelliyoruz.
+            //        Expiration = TimeSpan.FromDays(9999), //Oluşturulacak Cookie'nin zamanını belirliyoruz.
+            //        SameSite = SameSiteMode.Lax, //Top level navigasyonlara sebep olmayan requestlere Cookie'nin gönderilmemesini belirtiyoruz.
+            //        SecurePolicy = CookieSecurePolicy.Always //HTTPS üzerinden erişilebilir yapıyoruz.
+            //    };
+            //    x.SlidingExpiration = true; //Expiration süresinin yarısı kadar süre zarfında istekte bulunulursa eğer geri kalan yarısını tekrar sıfırlayarak ilk ayarlanan süreyi tazeleyecektir.
+            //    x.ExpireTimeSpan = TimeSpan.FromDays(1); //CookieBuilder nesnesinde tanımlanan Expiration değerinin varsayılan değerlerle ezilme ihtimaline karşın tekrardan Cookie vadesi burada da belirtiliyor.
+            //});
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //}).AddCookie(options =>
+            //{
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            //    options.Cookie.MaxAge = options.ExpireTimeSpan; // optional
+            //    options.SlidingExpiration = true;
+            //});
+            #endregion
+
+
             services.AddControllersWithViews();
+            #region FluentValidation
             services.AddControllers().AddFluentValidation(fv =>
             {
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
+            #endregion
 
-
-
-
+            #region IoC
             services.AddScoped<IHobbyService, HobbyService>(); /// dı 
             services.AddScoped<IEducationService, EducationService>(); /// dı 
+            #endregion
 
-            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacağımız için Validator sınıfımızı ve servisimizi inject ediyoruz. 
-            services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
+            #region Automapper
             services.AddAutoMapper(typeof(HobbyMapping));
             services.AddAutoMapper(typeof(UserMapping));
             services.AddAutoMapper(typeof(EducationMapping));
+
+            #endregion
+
+            #region FluentValidation
+            services.AddSingleton<IValidator<HobbyDTO>, HobbyValidation>(); // constructor injection kullanacağımız için Validator sınıfımızı ve servisimizi inject ediyoruz. 
+            services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
+            #endregion
+
 
         }
 
@@ -97,7 +141,8 @@ namespace BackEndProject
 
             app.UseRouting();
             app.UseAuthentication();  //identity
-            app.UseAuthorization();
+            app.UseAuthorization();   //IoC
+
 
             app.UseEndpoints(endpoints =>
             {
