@@ -91,9 +91,8 @@ namespace BackEndProject
             }
 
             app.UseHttpsRedirection();
-            app.UseStatusCodePages(); //**
 
-
+            app.UseStatusCodePages(); //* 400-599 hata durum kodu ayarladığında, durum kodunu ve boş bir yanıt gövdesini döndürür.
             app.UseStaticFiles();
 
             app.UseRouting();
