@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.AutoMapper;
 using BusinessLayer.Services.Concrete;
 using BusinessLayer.Services.Interface;
+using BusinessLayer.Validation.CustomValidation;
 using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Context;
 using DataAccessLayer.Models.DTOs;
@@ -39,11 +40,22 @@ namespace BackEndProject
             services.AddIdentity<AppUser, AppRole>
                 (x =>
                 {
-                    x.Password.RequireLowercase = false; // =>özelliði; þifre içerisinde en az 1 adet küçük harf zorunluluðu olmasý özelliðini false yaptýk.
-                    x.Password.RequireUppercase = false; // => özelliði; þifre içerisinde en az 1 adet büyük harf zorunluluðu olmasýný false yaptýk.
-                    x.Password.RequireNonAlphanumeric = false; // =>  özelliði; þifre içerisinde en az 1 adet alfanümerik karakter zorunluluðu olmasý özelliði false.
-                })
-            .AddEntityFrameworkStores<ApplicationDbContext>(); //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
+                    x.Password.RequireNonAlphanumeric = false; //Alfanumerik zorunluluğunu kaldırıyoruz.
+                    x.Password.RequireLowercase = false; //Küçük harf zorunluluğunu kaldırıyoruz.
+                    x.Password.RequireUppercase = false; //Büyük harf zorunluluğunu kaldırıyoruz.
+                    x.Password.RequireDigit = false; //0-9 arası sayısal karakter zorunluluğu 
+                    x.User.RequireUniqueEmail = false; //Email adreslerini tekilleştiriyoruz.
+
+                    //x.User.AllowedUserNameCharacters = "abcçdefghiıjklmnoöpqrsştuüvwxyzABCÇDEFGHIİJKLMNOÖPQRSŞTUÜVWXYZ0123456789-._@+"; //Kullanıcı adında geçerli olan karakterleri belirtiyoruz.
+               
+                }).AddPasswordValidator<CustomPasswordValidation>()
+          .AddUserValidator<CustomUserValidation>()
+          .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<ApplicationDbContext>(); //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
+
+            //böylece hem password hemde user temelli custom validasyon yapılanması sağlanmış bulunmaktadır.
+
+
+            //services.AddMvc();
             services.AddControllersWithViews();
             services.AddControllers().AddFluentValidation(fv =>
             {
@@ -52,15 +64,6 @@ namespace BackEndProject
 
 
 
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    // Cookie settings
-            //    options.Cookie.HttpOnly = true;
-            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.LoginPath = “/Identity/Account/Login”;
-            //    options.AccessDeniedPath = “/Identity/Account/AccessDenied”;
-            //    options.SlidingExpiration = true;
-            //});
 
             services.AddScoped<IHobbyService, HobbyService>(); /// dı 
             services.AddScoped<IEducationService, EducationService>(); /// dı 
@@ -86,15 +89,16 @@ namespace BackEndProject
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
+            app.UseStatusCodePages(); //**
+
 
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();  //identity
             app.UseAuthorization();
-
-            app.UseAuthentication(); //identity
 
             app.UseEndpoints(endpoints =>
             {

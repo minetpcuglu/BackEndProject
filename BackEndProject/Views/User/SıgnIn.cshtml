@@ -1,5 +1,11 @@
 ﻿@model AppUserViewModel
 
+@{
+    ViewData["Title"] = "SıgnIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
 
 <h3>Üye Ol</h3>
 
@@ -7,8 +13,9 @@
 <form asp-action="SıgnIn">
     <table>
         <tr>
-            <td colspan="3"><div asp-validation-summary="ModelOnly"></div></td>
+            <td colspan="3"><div asp-validation-summary="All"></div></td>
         </tr>
+       
         <tr>
             <td><label asp-for="UserName"></label></td>
             <td><input asp-for="UserName" /></td>
@@ -23,6 +30,7 @@
             <td><label asp-for="Sifre"></label></td>
             <td><input asp-for="Sifre" /></td>
             <td><span asp-validation-for="Sifre"></span></td>
+
         </tr>
         <tr>
             <td colspan="3"><input type="submit" value="Üye Ol" /></td>
