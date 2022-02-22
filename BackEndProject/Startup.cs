@@ -57,12 +57,13 @@ namespace BackEndProject
 
                }).AddPasswordValidator<CustomPasswordValidation>()
          .AddUserValidator<CustomUserValidation>()
-         .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();//(şifremi unuttum!)  //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
+         .AddErrorDescriber<CustomIdentityErrorDescriber>()
+         .AddEntityFrameworkStores<ApplicationDbContext>();//(şifremi unuttum!)  //identity yapılanmasına dair gerekli entegrasyonu “AddIdentity” metodu ile gerçekleştirmekteyiz.
 
             //böylece hem password hemde user temelli custom validasyon yapılanması sağlanmış bulunmaktadır.
             #endregion
 
-
+         
 
             #region Cookie
             //services.ConfigureApplicationCookie(x =>
@@ -70,14 +71,14 @@ namespace BackEndProject
             //    x.LoginPath = new PathString("/Login/UserLogin");
             //    x.Cookie = new CookieBuilder
             //    {
-            //        Name = "CoreIdentityCookie", //Oluşturulacak Cookie'yi isimlendiriyoruz.
-            //        HttpOnly = false, //Kötü niyetli insanların client-side(istemci) tarafından Cookie'ye erişmesini engelliyoruz.
-            //        Expiration = TimeSpan.FromDays(9999), //Oluşturulacak Cookie'nin zamanını belirliyoruz.
+            //        Name = "AspNetCoreIdentityExampleCookie", //Oluşturulacak Cookie'yi isimlendiriyoruz.
+            //        HttpOnly = false, //Kötü niyetli insanların client-side tarafından Cookie'ye erişmesini engelliyoruz.
+            //        Expiration = TimeSpan.FromMinutes(2), //Oluşturulacak Cookie'nin vadesini belirliyoruz.
             //        SameSite = SameSiteMode.Lax, //Top level navigasyonlara sebep olmayan requestlere Cookie'nin gönderilmemesini belirtiyoruz.
             //        SecurePolicy = CookieSecurePolicy.Always //HTTPS üzerinden erişilebilir yapıyoruz.
             //    };
             //    x.SlidingExpiration = true; //Expiration süresinin yarısı kadar süre zarfında istekte bulunulursa eğer geri kalan yarısını tekrar sıfırlayarak ilk ayarlanan süreyi tazeleyecektir.
-            //    x.ExpireTimeSpan = TimeSpan.FromDays(1); //CookieBuilder nesnesinde tanımlanan Expiration değerinin varsayılan değerlerle ezilme ihtimaline karşın tekrardan Cookie vadesi burada da belirtiliyor.
+            //    x.ExpireTimeSpan = TimeSpan.FromMinutes(2); //CookieBuilder nesnesinde tanımlanan Expiration değerinin varsayılan değerlerle ezilme ihtimaline karşın tekrardan Cookie vadesi burada da belirtiliyor.
             //});
 
             //services.AddAuthentication(options =>
@@ -103,6 +104,12 @@ namespace BackEndProject
             #region IoC
             services.AddScoped<IHobbyService, HobbyService>(); /// dı 
             services.AddScoped<IEducationService, EducationService>(); /// dı 
+
+            services.AddScoped<IAppUserService, AppUserService>(); /// dı 
+
+            services.AddTransient<UserManager<AppUser>>();
+            services.AddTransient<UserManager<AppRole>>();
+
             #endregion
 
             #region Automapper

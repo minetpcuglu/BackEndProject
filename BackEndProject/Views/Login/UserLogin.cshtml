@@ -8,9 +8,9 @@
             <td colspan="3"><div asp-validation-summary="All"></div></td>
         </tr>
         <tr>
-            <td><label asp-for="Email"></label></td>
-            <td><input asp-for="Email" /></td>
-            <td><span asp-validation-for="Email"></span></td>
+            <td><label asp-for="UserName"></label></td>
+            <td><input asp-for="UserName" /></td>
+            <td><span asp-validation-for="UserName"></span></td>
         </tr>
         <tr>
             <td><label asp-for="Password"></label></td>
@@ -18,10 +18,15 @@
             <td><span asp-validation-for="Password"></span></td>
         </tr>
         <tr>
-            <td><label asp-for="Persistent"></label></td>
-            <td><input asp-for="Persistent" /></td>
-            <td><span asp-validation-for="Persistent"></span></td>
-        </tr>
+                <td><label asp-for="Persistent"></label></td>
+                <td><input asp-for="Persistent" /></td>
+                <td><span asp-validation-for="Persistent"></span></td>
+            </tr>
+
+        @*<tr>
+            <td><label>Remember Me</label></td>
+            <td><input type="checkbox" asp-for="RememberMe" /></td>
+        </tr>*@
         <tr>
             <td colspan="3"><input type="submit" value="Giriş Yap" /></td>
         </tr>

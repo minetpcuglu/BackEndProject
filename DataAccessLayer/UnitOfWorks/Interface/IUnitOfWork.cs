@@ -12,8 +12,9 @@ namespace DataAccessLayer.UnitOfWorks.Interface
         //IAboutRepository AboutRepository { get; }
         IEducationRepository EducationRepository { get; }
         IHobbyRepository HobbyRepository { get; }
-
+     
         //IAwardRepository AwardRepository { get; }
+        IAppUserRepository AppUserRepository { get; }
         Task<int> SaveChangesAsync();
 
         Task Commit();  // => Başarılı bir işlemin sonucunda çalıştırılır. İşlemin başalamasından itibaren tüm değişikliklerin veri tabanına uygulanmasını temin eder.

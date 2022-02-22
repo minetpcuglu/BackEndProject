@@ -64,6 +64,16 @@ namespace DataAccessLayer.UnitOfWorks.Concrete
             }
         }
 
+        private IAppUserRepository _appUserRepository;
+        public IAppUserRepository AppUserRepository
+        {
+            get
+            {
+                if (_appUserRepository == null) _appUserRepository = new AppUserRepository(_db);
+                return _appUserRepository;
+            }
+        }
+
         public async Task Commit() => await _db.SaveChangesAsync();
 
 

@@ -5,6 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using BusinessLayer.IoC;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace BackEndProject
 {
@@ -12,6 +13,8 @@ namespace BackEndProject
     {
         public static void Main(string[] args)
         {
+            //var logPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs");
+            //NLog.GlobalDiagnosticsContext.Set("LogDirectory", logPath);
             CreateHostBuilder(args).Build().Run();
         }
 

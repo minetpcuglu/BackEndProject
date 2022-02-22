@@ -23,15 +23,15 @@ namespace BackEndProject.Controllers
             _mapper = mapper;
             _userManager = userManager;
         }
-    
+
         //[Authorize]
         public IActionResult Index()
         {
             return View(_userManager.Users);
         }
 
-        
-        
+
+
         [HttpGet]
         public IActionResult SıgnIn()
         {
@@ -50,18 +50,18 @@ namespace BackEndProject.Controllers
                 //    Email = appUserViewModel.Email
                 //};
                 IdentityResult result = await _userManager.CreateAsync(appUser, appUserViewModel.Sifre);
-                if (result.Succeeded)       
+                if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
                     result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-               
+
             }
             return View();
-            
-            
+
+
         }
 
-
+        #region 
         public IActionResult PasswordReset()
         {
             return View();
@@ -69,59 +69,61 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
         {
-            //AppUser user = await _userManager.FindByEmailAsync(model.Email);
-            //if (user != null)
-            //{
-            //    string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user); //kullanıcıya özel token üretildi
 
-            //    MailMessage mail = new MailMessage();
-            //    mail.IsBodyHtml = true;
-            //    mail.To.Add(user.Email);
-            //    mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
-            //    mail.Subject = "Şifre Güncelleme Talebi";
-            //    mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "User", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
-            //    mail.IsBodyHtml = true;
-            //    SmtpClient smp = new SmtpClient();
-            //    smp.Credentials = new NetworkCredential("*****@gmail.com", "******");
-            //    smp.Port = 587;
-            //    smp.Host = "smtp.gmail.com";
-            //    smp.EnableSsl = true;
-            //    smp.Send(mail);
+                //   MailMessage mail = new MailMessage();
+                //    mail.IsBodyHtml = true;
+                //    mail.To.Add(user.Email);
+                //    mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8); //kodlamak ve bunları bir bayt dizisinde depolamak için nesne kullanır.
+                //    mail.Subject = "Şifre Güncelleme Talebi";
+                //    mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "User", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
+                //    mail.IsBodyHtml = true;
+                //    SmtpClient smp = new SmtpClient();
+                //    smp.Credentials = new NetworkCredential("*****@gmail.com", "******");
+                //    smp.Port = 587;
+                //    smp.Host = "smtp.gmail.com";
+                //    smp.EnableSsl = true;
+                //    smp.Send(mail);
 
-            //    MailMessage mail = new MailMessage();
-            //    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            //    mail.From = new MailAddress("fromaddress@gmail.com");
-            //    mail.To.Add("toaddress1@gmail.com");
-            //    mail.To.Add("toaddress2@gmail.com");
-            //    mail.Subject = "Password Recovery ";
-            //    mail.Body += " <html>";
-            //    mail.Body += "<body>";
-            //    mail.Body += "<table>";
-            //    mail.Body += "<tr>";
-            //    mail.Body += "<td>User Name : </td><td> HAi </td>";
-            //    mail.Body += "</tr>";
+                //    mailmessage mail = new mailmessage();
+                //    smtpclient smtpserver = new smtpclient("smtp.gmail.com");
+                //    mail.from = new mailaddress("fromaddress@gmail.com");
+                //    mail.to.add("toaddress1@gmail.com");
+                //    mail.to.add("toaddress2@gmail.com");
+                //    mail.subject = "password recovery ";
+                //    mail.body += " <html>";
+                //    mail.body += "<body>";
+                //    mail.body += "<table>";
+                //    mail.body += "<tr>";
+                //    mail.body += "<td>user name : </td><td> hai </td>";
+                //    mail.body += "</tr>";
 
-            //    mail.Body += "<tr>";
-            //    mail.Body += "<td>Password : </td><td>aaaaaaaaaa</td>";
-            //    mail.Body += "</tr>";
-            //    mail.Body += "</table>";
-            //    mail.Body += "</body>";
-            //    mail.Body += "</html>";
-            //    mail.IsBodyHtml = true;
-            //    SmtpServer.Port = 587;
-            //    SmtpServer.Credentials = new System.Net.NetworkCredential("sendfrommailaddress.com", "password");
-            //    SmtpServer.EnableSsl = true;
-            //    SmtpServer.Send(mail);
+                //    mail.body += "<tr>";
+                //    mail.body += "<td>password : </td><td>aaaaaaaaaa</td>";
+                //    mail.body += "</tr>";
+                //    mail.body += "</table>";
+                //    mail.body += "</body>";
+                //    mail.body += "</html>";
+                //    mail.ısbodyhtml = true;
+                //    smtpserver.port = 587;
+                //    smtpserver.credentials = new system.net.networkcredential("sendfrommailaddress.com", "password");
+                //    smtpserver.enablessl = true;
+                //    smtpserver.send(mail);
 
-            //    ViewBag.State = true;
-            //}
-            //else
-            //    ViewBag.State = false;
+                //    viewbag.state = true;
+                //}
+                //else
+                //    viewbag.state = false;
 
-            
+            }
 
             return View();
         }
+        #endregion MailOnayı
+
 
 
         [HttpGet("[action]/{userId}/{token}")]
@@ -129,6 +131,8 @@ namespace BackEndProject.Controllers
         {
             return View();
         }
+        //query string URL üzerindeki stringler ile verileri taşımaya yarar
+        // e-postadaki urle tıkladıgında  query string olarak belirtilen userId ve token değerleri “UpdatePassword” action metodu tarafından yakalanmakta ve TempData‘ya atılmaktadır
         [HttpPost("[action]/{userId}/{token}")]
         public async Task<IActionResult> UpdatePassword(UpdatePasswordViewModel model, string userId, string token)
         {
