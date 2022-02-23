@@ -13,15 +13,17 @@ namespace BusinessLayer.Services.Interface
     {
         Task<IdentityResult> SingIn(AppUserViewModel appUserView);
         Task<SignInResult> LogIn(LoginViewModel loginVM);
+        Task EditUser(EditProfileViewModel editProfileViewModel);
+        Task<EditProfileViewModel> GetById(int id);
         Task LogOut();
 
 
 
         //Task<List<AppUser>> ListUser();
         //Task<int> GetUserIdFromName(string userName); // => Kullanıcının isminden Id yakalamak için kullanılır.
-        //Task EditUser(UpdateProfileVM UpdateProfileVM);
+    
         //Task DeleteUser(int id);
-        //Task<UpdateProfileVM> GetById(int id);
+       
         //Task<UpdateProfileVM> GetUserName(string userName);
 
     }

@@ -34,8 +34,52 @@ namespace BusinessLayer.Services.Concrete
 
         }
 
+        public async Task EditUser(EditProfileViewModel editProfileViewModel)
+        {
+            var user = await _unitOfWork.AppUserRepository.GetById(editProfileViewModel.Id);
+            if (user != null)
+            {
+                if (editProfileViewModel.Email != user.Email)
+                {
+                    var mail = await _userManager.FindByEmailAsync(editProfileViewModel.Email); //email varmı
+                    if (mail == null) //yokise
+                    {
+                        await _userManager.SetEmailAsync(user, editProfileViewModel.Email);
+                    }
 
+                }
 
+                if (editProfileViewModel.UserName != user.UserName)
+                {
+                    var userName = await _userManager.FindByNameAsync(editProfileViewModel.UserName); //varmı
+                    if (userName == null) //yokise
+                    {
+                        await _userManager.SetUserNameAsync(user, editProfileViewModel.UserName);
+                        user.UserName = editProfileViewModel.UserName;
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+
+                    }
+                }
+                if (editProfileViewModel.Password != null)
+                {
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, editProfileViewModel.Password);
+                    await _userManager.UpdateAsync(user);
+                }
+                if (editProfileViewModel.Adress != user.Adress)
+                {
+                    user.Adress = editProfileViewModel.Adress;
+                    await _unitOfWork.AppUserRepository.Update(user);
+                    await _unitOfWork.Commit();
+                }
+            }
+        }
+
+        public async Task<EditProfileViewModel> GetById(int id)
+        {
+            var user = await  _unitOfWork.AppUserRepository.GetById(id);
+
+            return _mapper.Map<EditProfileViewModel>(user);
+        }
 
         public async Task<SignInResult> LogIn(LoginViewModel loginVM)
         {
@@ -54,7 +98,7 @@ namespace BusinessLayer.Services.Concrete
 
 
             //Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(_userManager, loginVM.Password, loginVM.Persistent, loginVM.Lock);
-            
+
 
         }
 
@@ -73,6 +117,9 @@ namespace BusinessLayer.Services.Concrete
 
             return result;
         }
+
+
+
 
 
     }

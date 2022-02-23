@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Services.Interface;
 using DataAccessLayer.Models.VMs;
 using EntityLayer.Entities.Concrete;
 using Microsoft.AspNetCore.Authorization;
@@ -18,12 +19,18 @@ namespace BackEndProject.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        public UserController(UserManager<AppUser> userManager, IMapper mapper)
+        readonly SignInManager<AppUser> _signInManager;
+        private readonly IAppUserService _appUser;
+    
+        public UserController(UserManager<AppUser> userManager, IMapper mapper, IAppUserService appUser)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _appUser = appUser;
+      
         }
 
+      
         //[Authorize]
         public IActionResult Index()
         {
@@ -49,7 +56,7 @@ namespace BackEndProject.Controllers
                 //    UserName = appUserViewModel.UserName,
                 //    Email = appUserViewModel.Email
                 //};
-                IdentityResult result = await _userManager.CreateAsync(appUser, appUserViewModel.Sifre);
+                IdentityResult result = await _userManager.CreateAsync(appUser, appUserViewModel.Sifre); //identity kendi kütüphanesi create
                 if (result.Succeeded)
                     return RedirectToAction("Index");
                 else
@@ -61,7 +68,7 @@ namespace BackEndProject.Controllers
 
         }
 
-        #region 
+        #region  MailOnayı
         public IActionResult PasswordReset()
         {
             return View();
@@ -122,8 +129,6 @@ namespace BackEndProject.Controllers
 
             return View();
         }
-        #endregion MailOnayı
-
 
 
         [HttpGet("[action]/{userId}/{token}")]
@@ -147,6 +152,22 @@ namespace BackEndProject.Controllers
                 ViewBag.State = false;
             return View();
         }
+        #endregion MailOnayı Mail
+
+        //[HttpGet]
+        //public async Task<IActionResult> UpdateUser(string userName)
+        //{
+        //    if (userName == User.Identity.Name)
+        //    {
+        //        var user = await 
+
+        //        if (user == null) return NotFound();
+
+        //        return View(user);
+        //    }
+        //    else return RedirectToAction(nameof(HomeController.Index), "Home");
+        //}
+
 
 
 

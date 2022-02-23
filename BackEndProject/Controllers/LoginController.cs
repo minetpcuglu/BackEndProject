@@ -157,7 +157,7 @@ namespace BackEndProject.Controllers
         {
             await _appUser.LogOut();
 
-            return RedirectToAction("LogIn");
+            return RedirectToAction("UserLogin");
         }
 
         //public async Task<IActionResult> Logout()
