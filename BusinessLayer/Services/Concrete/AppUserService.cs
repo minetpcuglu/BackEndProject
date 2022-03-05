@@ -34,28 +34,28 @@ namespace BusinessLayer.Services.Concrete
 
         }
 
-       
-        public async Task<EditProfileViewModel> GetById(int id) //samet
-        {
-            var user = await _unitOfWork.AppUserRepository.GetById(id);
 
-            return _mapper.Map<EditProfileViewModel>(user);
-        }
-
-        //public async Task<EditProfileViewModel> GetById(int id)
+        //public async Task<EditProfileViewModel> GetById(int id) //çalışıyor
         //{
-        //    var user = await _unitOfWork.AppUserRepository.GetFilteredFirstOrDefault(
-        //        selector: x => new EditProfileViewModel
-        //        {
-        //            Id = x.Id,
-        //            Adress = x.Adress,
-        //            UserName = x.UserName,
-        //            Email = x.Email
-        //        },
-        //        expression: x => x.Id == id);
+        //    var user = await _unitOfWork.AppUserRepository.GetById(id);
 
-        //    return user;
+        //    return _mapper.Map<EditProfileViewModel>(user);
         //}
+
+        public async Task<EditProfileViewModel> GetById(int id)  //ikiside calısıyor
+        {
+            var user = await _unitOfWork.AppUserRepository.GetFilteredFirstOrDefault(
+                selector: x => new EditProfileViewModel
+                {
+                    Id = x.Id,
+                    Adress = x.Adress,
+                    UserName = x.UserName,
+                    Email = x.Email
+                },
+                expression: x => x.Id == id);
+
+            return user;
+        }
 
         public async Task EditUser(EditProfileViewModel model)
         {

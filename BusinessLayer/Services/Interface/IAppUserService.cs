@@ -15,7 +15,6 @@ namespace BusinessLayer.Services.Interface
         Task<SignInResult> LogIn(LoginViewModel loginVM);
         Task EditUser(EditProfileViewModel editProfileViewModel);
         Task<EditProfileViewModel> GetById(int id);
-        //Task<EditProfileViewModel> GetById(string id);
         Task<EditProfileViewModel> GetUserName(string userName);
         Task LogOut();
 
