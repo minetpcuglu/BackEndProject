@@ -1,13 +1,9 @@
-﻿
+﻿@model IEnumerable<EntityLayer.Entities.Concrete.AppUser>
 
 <table class="table table-bordered">
     <tr>
         <td>Kullanıcı Adı</td>
         <td>Email</td>
-    
-
-
-
     </tr>
 
     @foreach (var item in Model)
@@ -15,12 +11,9 @@
         <tr>
             <td>@item.UserName</td>
             <td>@item.Email</td>
-        
 
-            @*<td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
-                <td><a href="/Education/UpdateEducation/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>*@
-
-
+            @*<td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>*@
+            <td><a href="/User/UpdateUser/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
         </tr>
     }
 </table>

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using BusinessLayer.Constants;
 using BusinessLayer.Services.BaseServices.Interface;
 using BusinessLayer.Services.Interface;
+using CoreLayer.Utilities.Results.Concrete;
+using CoreLayer.Utilities.Results.Interface;
 using DataAccessLayer.Context;
 using DataAccessLayer.Models.DTOs;
 using DataAccessLayer.Repositories.Interface.EntityTypeRepositories;
@@ -30,14 +33,15 @@ namespace BusinessLayer.Services.Concrete
 
         }
 
+
         public async Task Add(HobbyDTO hobbyDTO)
-        { 
+        {
             var addHobby = _mapper.Map<HobbyDTO, Hobby>(hobbyDTO);
             await _unitOfWork.HobbyRepository.Insert(addHobby);
             await _unitOfWork.Commit();
         }
 
-        public async Task Delete (int id)
+        public async Task Delete(int id)
         {
             var deleteHobby = await _unitOfWork.HobbyRepository.Get(x => x.Id == id);
             _unitOfWork.HobbyRepository.Delete(deleteHobby);
@@ -46,7 +50,7 @@ namespace BusinessLayer.Services.Concrete
 
         public async Task Update(HobbyDTO entity)
         {
-            var hobbyUpdate = _mapper.Map<HobbyDTO,Hobby>(entity);
+            var hobbyUpdate = _mapper.Map<HobbyDTO, Hobby>(entity);
 
             if (hobbyUpdate.Id != 0)
             {
@@ -57,7 +61,7 @@ namespace BusinessLayer.Services.Concrete
 
         }
 
-   
+
 
         public async Task<List<HobbyDTO>> GetAll()
         {
@@ -68,14 +72,14 @@ namespace BusinessLayer.Services.Concrete
             //var newList = hobbyList.AsQueryable().Select(x => new HobbyDTO { Id = x.Id, MyHobby = x.MyHobby }); automapper kullanmazsak
             return list;
         }
-    
+
 
         public async Task<HobbyDTO> GetById(int id)
         {
-           var hobby  = await _unitOfWork.HobbyRepository.GetById(id);
+            var hobby = await _unitOfWork.HobbyRepository.GetById(id);
             return _mapper.Map<HobbyDTO>(hobby);
         }
 
-       
+
     }
 }

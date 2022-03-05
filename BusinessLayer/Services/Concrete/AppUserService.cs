@@ -34,51 +34,81 @@ namespace BusinessLayer.Services.Concrete
 
         }
 
-        public async Task EditUser(EditProfileViewModel editProfileViewModel)
+       
+        public async Task<EditProfileViewModel> GetById(int id) //samet
         {
-            var user = await _unitOfWork.AppUserRepository.GetById(editProfileViewModel.Id);
+            var user = await _unitOfWork.AppUserRepository.GetById(id);
+
+            return _mapper.Map<EditProfileViewModel>(user);
+        }
+
+        //public async Task<EditProfileViewModel> GetById(int id)
+        //{
+        //    var user = await _unitOfWork.AppUserRepository.GetFilteredFirstOrDefault(
+        //        selector: x => new EditProfileViewModel
+        //        {
+        //            Id = x.Id,
+        //            Adress = x.Adress,
+        //            UserName = x.UserName,
+        //            Email = x.Email
+        //        },
+        //        expression: x => x.Id == id);
+
+        //    return user;
+        //}
+
+        public async Task EditUser(EditProfileViewModel model)
+        {
+            var user = await _unitOfWork.AppUserRepository.GetById(model.Id);
             if (user != null)
             {
-                if (editProfileViewModel.Email != user.Email)
-                {
-                    var mail = await _userManager.FindByEmailAsync(editProfileViewModel.Email); //email varmı
-                    if (mail == null) //yokise
-                    {
-                        await _userManager.SetEmailAsync(user, editProfileViewModel.Email);
-                    }
 
-                }
-
-                if (editProfileViewModel.UserName != user.UserName)
+                if (model.Password != null)
                 {
-                    var userName = await _userManager.FindByNameAsync(editProfileViewModel.UserName); //varmı
-                    if (userName == null) //yokise
-                    {
-                        await _userManager.SetUserNameAsync(user, editProfileViewModel.UserName);
-                        user.UserName = editProfileViewModel.UserName;
-                        await _signInManager.SignInAsync(user, isPersistent: true);
-
-                    }
-                }
-                if (editProfileViewModel.Password != null)
-                {
-                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, editProfileViewModel.Password);
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, model.Password);
                     await _userManager.UpdateAsync(user);
                 }
-                if (editProfileViewModel.Adress != user.Adress)
+                if (model.UserName != user.UserName)
                 {
-                    user.Adress = editProfileViewModel.Adress;
+                    var isUserNameExist = await _userManager.FindByNameAsync(model.UserName);
+
+                    if (isUserNameExist == null)
+                    {
+                        await _userManager.SetUserNameAsync(user, model.UserName);
+                        user.UserName = model.UserName;
+                        await _signInManager.SignInAsync(user, isPersistent: true);
+                    }
+                }
+                if (model.Adress != user.Adress)
+                {
+                    user.Adress = model.Adress;
                     await _unitOfWork.AppUserRepository.Update(user);
                     await _unitOfWork.Commit();
                 }
+
+                if (model.Email != user.Email)
+                {
+                    var isEmailExist = await _userManager.FindByEmailAsync(model.Email);
+                    if (isEmailExist == null)
+                        await _userManager.SetEmailAsync(user, model.Email);
+                }
+
             }
         }
 
-        public async Task<EditProfileViewModel> GetById(int id)
+        public async Task<EditProfileViewModel> GetUserName(string userName)
         {
-            var user = await  _unitOfWork.AppUserRepository.GetById(id);
-
-            return _mapper.Map<EditProfileViewModel>(user);
+            var user = await _unitOfWork.AppUserRepository.GetFilteredFirstOrDefault(
+                selector: y => new EditProfileViewModel
+                {
+                    Email = y.Email,
+                    Adress = y.Adress,
+                    Password = y.PasswordHash,
+                    UserName = y.UserName
+                },
+                expression: x => x.UserName == userName
+                );
+            return user;
         }
 
         public async Task<SignInResult> LogIn(LoginViewModel loginVM)
@@ -95,11 +125,7 @@ namespace BusinessLayer.Services.Concrete
             //}
 
             return user;
-
-
             //Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(_userManager, loginVM.Password, loginVM.Persistent, loginVM.Lock);
-
-
         }
 
         public async Task LogOut()

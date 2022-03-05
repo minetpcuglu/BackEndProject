@@ -55,6 +55,43 @@ namespace DataAccessLayer.Repositories.Concrete.BaseRepositories
 
         //public async Task Update(T t) =>  _context.Entry(t).State = EntityState.Modified; //********
 
+        public async Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,// => ilk paramatre Entity tipince olacak ikinci aldığı parametre ise dönüş tipide TResult olacak.
+                                                               Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, // ilk parametredeki verinin bool tipinde dönmesini sağlayacaktır.
+                                                               IOrderedQueryable<T>> orderby = null, Func<IQueryable<T>, // öğeleri bir düzene göre sıralar.
+                                                               IIncludableQueryable<T, object>> inculude = null,// Tanımlanan öğeyi içerip içermediğini kontrol eder.
+                                                               bool disableTracking = true)
+        {
+            IQueryable<T> query = _table; //=> Sorgu geldikçe Db den ye gidip gelecek.
+
+            if (disableTracking) query = query.AsNoTracking(); // => disableTracking varlık üzerinde ki değişiklikleri kontrol edip Save'e gönderiyoru. Biz filtreleme yaptığımızdan filtreleyip gönderiyoruz. Burada disableTracking'e gerek olmadığı için kapattık.
+            if (inculude != null) query = inculude(query); // => include edilen nesneleri query'e attık.
+            if (expression != null) query = query.Where(expression); // => expression ile gelenleri linq to sorgusu yazılması için Where sorgusunu query'e attık.
+            if (orderby != null) return await orderby(query).Select(selector).FirstOrDefaultAsync(); // => Gelen orderby sorgusu dolu ise bu şart çalışacak.
+            else return await query.Select(selector).FirstOrDefaultAsync(); // => şayet Null geliyorsa da bu satır çalışsın.
+        }
+
+        //public async Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> expression, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        //{
+        //    IQueryable<T> query = _table;
+        //    if (include != null)
+        //    {
+        //        query = include(query);
+        //    }
+        //    if (expression != null)
+        //    {
+        //        query = query.Where(expression);
+        //    }
+        //    if (orderBy != null)
+        //    {
+        //        return await orderBy(query).Select(selector).FirstOrDefaultAsync();
+        //    }
+        //    else
+        //    {
+        //        return await query.Select(selector).FirstOrDefaultAsync();
+        //    }
+        //}
+
+
         public async Task Update(T t)
         {
             _table.Update(t);

@@ -27,8 +27,9 @@ namespace BackEndProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var list = await _hobbyServices.GetAll();
-            return View(list);
+            var result = await _hobbyServices.GetAll();
+
+            return View(result);
         }
 
         [HttpGet]
@@ -44,7 +45,7 @@ namespace BackEndProject.Controllers
             var validateResult = _hobbyValidator.Validate(hobbyDTO);
             if (validateResult.IsValid)
             {
-             await   _hobbyServices.Add(hobbyDTO);
+                await _hobbyServices.Add(hobbyDTO);
                 return RedirectToAction("Index");
             }
             else
@@ -58,6 +59,7 @@ namespace BackEndProject.Controllers
 
         public async Task<IActionResult> DeleteHobby(int id)
         {
+      
             await _hobbyServices.Delete(id);
             return RedirectToAction("Index");
         }

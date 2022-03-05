@@ -10,7 +10,6 @@ namespace DataAccessLayer.Models.VMs
    public class EditProfileViewModel
     {
         public int Id { get; set; }
-        
         public string Adress { get; set; }
 
         [DataType(DataType.Password)]
@@ -19,7 +18,5 @@ namespace DataAccessLayer.Models.VMs
         [Display(Name = "User Name")]
         public string UserName { get; set; }
         public string Email { get; set; }
-
-
     }
 }

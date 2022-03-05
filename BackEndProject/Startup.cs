@@ -104,7 +104,6 @@ namespace BackEndProject
             #region IoC
             services.AddScoped<IHobbyService, HobbyService>(); /// dı 
             services.AddScoped<IEducationService, EducationService>(); /// dı 
-
             services.AddScoped<IAppUserService, AppUserService>(); /// dı 
 
             services.AddTransient<UserManager<AppUser>>();

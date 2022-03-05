@@ -30,6 +30,19 @@ namespace DataAccessLayer.Repositories.Interface.BaseRepositories
                                                      bool disableTracing = true,
                                                      int pageIndex = 1,
                                                      int pageSize = 3);
+
+
+        Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector, /*** samet*/
+                                                       Expression<Func<T, bool>> expression = null,
+                                                       Func<IQueryable<T>, IOrderedQueryable<T>> orderby = null,
+                                                       Func<IQueryable<T>, IIncludableQueryable<T, object>> inculude = null,
+                                                       bool disableTracking = true);
+
+        ////normally unitofwork dont prefer getquery. But I am learning step by step . so I used here .
+        //Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,
+        //                                                 Expression<Func<T, bool>> expression,
+        //                                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //                                                 Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
         Task<T> GetById(int id);
     }
 }

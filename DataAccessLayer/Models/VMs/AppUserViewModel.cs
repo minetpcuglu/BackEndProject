@@ -9,6 +9,7 @@ namespace DataAccessLayer.Models.VMs
 {
    public class AppUserViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Lütfen kullanıcı adını boş geçmeyiniz...")]
         [StringLength(15, ErrorMessage = "Lütfen kullanıcı adını 4 ile 15 karakter arasında giriniz...", MinimumLength = 4)]
         [Display(Name = "Kullanıcı Adı")]
@@ -22,5 +23,8 @@ namespace DataAccessLayer.Models.VMs
         [DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
         [Display(Name = "Sifre")]
         public string Sifre { get; set; }
+
+        [Required(ErrorMessage = "Lütfen şifreyi boş geçmeyiniz...")]
+        public string Adress { get; set; }
     }
 }
