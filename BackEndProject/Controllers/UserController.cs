@@ -20,7 +20,7 @@ namespace BackEndProject.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        readonly SignInManager<AppUser> _signInManager;
+        readonly SignInManager<AppUser> _signInManager; //siteme authentice olma
 
         private readonly IAppUserService _appUser;
 

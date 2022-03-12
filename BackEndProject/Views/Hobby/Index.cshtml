@@ -1,26 +1,58 @@
 ﻿
 @model List<HobbyDTO>
-<table class="table table-bordered">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<table class="table table-bordered" id="tblHobby">
     <tr>
         <td>1</td>
         <td>1</td>
-        <th> Sil  </th>
         <th> Güncelle  </th>
-      
+        <th> Sil  </th>
+
 
     </tr>
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>@item.Id</td>
-    <td>@item.MyHobby</td>
-    <td><a href="/Hobby/DeleteHobby/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
-    <td><a href="/Hobby/UpdateHobby/@item.Id"  class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
-
-
-</tr>
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.MyHobby</td>
+            @*<td><a href="/Hobby/DeleteHobby/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>7*@
+            <td><a href="/Hobby/UpdateHobby/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
+            <td>
+                <button type="button" class="btn btn-outline-danger btn-sm"
+                        onclick="Delete(@item.Id)">
+                    Sil
+                </button>
+            </td>
+          
+        </tr>
     }
+
 </table>
 
-<a href="/Hobby/AddHobby/" class="btn btn-primary">Yeni Hobi Ekle</a>
+
+<a href="/Hobby/AddHobby/" class="btn btn-primary">Hobby Ekle</a>
+
+@section scripts{
+    <script type="text/javascript">
+        function Delete(id) {
+            if (confirm("Silmek istediğinize emin misiniz ?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Hobby/DeleteHobby/" + id,
+                    contentType: "application/json; charset=utf-8",
+
+                    dataType: "json",
+                    success: function (func) {
+
+                        alert("Yazar Silme işlemi başarılı bir şekilde gerçekleştirildi");
+                    }
+
+                });
+            }
+        };
+
+    </script>
+}
+
+

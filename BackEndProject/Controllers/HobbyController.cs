@@ -57,12 +57,20 @@ namespace BackEndProject.Controllers
         }
 
 
+
+
+        [HttpPost]
         public async Task<IActionResult> DeleteHobby(int id)
         {
-      
-            await _hobbyServices.Delete(id);
-            return RedirectToAction("Index");
+            if (id != 0)
+            {
+                await _hobbyServices.Delete(id);
+
+                return Ok();
+            }
+            return BadRequest();
         }
+
 
 
         [HttpGet]
@@ -90,7 +98,7 @@ namespace BackEndProject.Controllers
             }
 
             return View(hobbyDTO);
-  
+
         }
 
     }
