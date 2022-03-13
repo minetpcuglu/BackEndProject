@@ -41,11 +41,21 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var deleteHobby = await _unitOfWork.HobbyRepository.Get(x => x.Id == id);
-            _unitOfWork.HobbyRepository.Delete(deleteHobby);
-            await _unitOfWork.Commit();
+            if (id!=0)
+            {
+                var deleteHobby = await _unitOfWork.HobbyRepository.Get(x => x.Id == id);
+                _unitOfWork.HobbyRepository.Delete(deleteHobby);
+                _unitOfWork.Commit();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+          
+           
         }
 
         public async Task Update(HobbyDTO entity)
@@ -79,7 +89,5 @@ namespace BusinessLayer.Services.Concrete
             var hobby = await _unitOfWork.HobbyRepository.GetById(id);
             return _mapper.Map<HobbyDTO>(hobby);
         }
-
-
     }
 }

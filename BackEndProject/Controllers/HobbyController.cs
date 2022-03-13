@@ -3,6 +3,7 @@ using AutoMapper;
 using BusinessLayer.Services.Interface;
 using BusinessLayer.Validation.FluentValidation;
 using DataAccessLayer.Models.DTOs;
+using DataAccessLayer.Models.VMs;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +47,7 @@ namespace BackEndProject.Controllers
             if (validateResult.IsValid)
             {
                 await _hobbyServices.Add(hobbyDTO);
-                return RedirectToAction("Index");
+                return Json(data: new { success = true, message = "your request has been successfuly added,." }, new Newtonsoft.Json.JsonSerializerSettings());
             }
             else
             {
@@ -64,9 +65,23 @@ namespace BackEndProject.Controllers
         {
             if (id != 0)
             {
-                await _hobbyServices.Delete(id);
-
-                return Ok();
+                var result = await _hobbyServices.Delete(id);
+                if (result)
+                {
+                    return Json(new ToastViewModel
+                    {
+                        Message = "silindi.",
+                        Success = true
+                    });
+                }
+                else
+                {
+                    return Json(new ToastViewModel
+                    {
+                        Message = "İşlem Başarısız.",
+                        Success = false
+                    });
+                }
             }
             return BadRequest();
         }

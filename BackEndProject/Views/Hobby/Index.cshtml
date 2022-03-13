@@ -1,40 +1,35 @@
 ﻿
 @model List<HobbyDTO>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<table class="table table-bordered" id="tblHobby">
-    <tr>
-        <td>1</td>
-        <td>1</td>
-        <th> Güncelle  </th>
-        <th> Sil  </th>
 
-
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table class="table table-bordered" id="tblHobby">
         <tr>
-            <td>@item.Id</td>
-            <td>@item.MyHobby</td>
-            @*<td><a href="/Hobby/DeleteHobby/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>7*@
-            <td><a href="/Hobby/UpdateHobby/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
-            <td>
-                <button type="button" class="btn btn-outline-danger btn-sm"
-                        onclick="Delete(@item.Id)">
-                    Sil
-                </button>
-            </td>
-          
+            <td>1</td>
+            <td>1</td>
+            <th> Güncelle  </th>
+            <th> Sil  </th>
         </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.MyHobby</td>
+                @*<td><a href="/Hobby/DeleteHobby/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>7*@
+                <td><a href="/Hobby/UpdateHobby/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                            onclick="Delete(@item.Id)">
+                        Sil
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </table>
+    <a href="/Hobby/AddHobby/" class="btn btn-primary">Hobby Ekle</a>
+
+    @section scripts{
+        <script type="text/javascript" src="~/DemoJavaScript.js"></script>
     }
-
-</table>
-
-
-<a href="/Hobby/AddHobby/" class="btn btn-primary">Hobby Ekle</a>
-
-@section scripts{
-    <script type="text/javascript" src="~/DemoJavaScript.js"></script>
-}
 
 

@@ -123,6 +123,12 @@ namespace BackEndProject
             services.AddSingleton<IValidator<EducationVM>, EducationValidation>();
             #endregion
 
+            #region ajax
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddRazorPages().AddNewtonsoftJson();
+            #endregion
+
 
         }
 

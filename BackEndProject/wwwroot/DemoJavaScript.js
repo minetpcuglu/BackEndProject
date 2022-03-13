@@ -1,16 +1,10 @@
 ﻿function Delete(id) {
+    var tr = $(event.currentTarget.parentElement.parentElement);
+    debugger;
     if (confirm("Silmek istediğinize emin misiniz ?")) {
-        $.ajax({
-            type: "POST",
-            url: "/Hobby/DeleteHobby/" + id,
-            contentType: "application/json; charset=utf-8",
-
-            dataType: "json",
-            success: function (func) {
-
-                alert("Yazar Silme işlemi başarılı bir şekilde gerçekleştirildi");
-            }
-
+        $.post("/Hobby/DeleteHobby/" + id, function (response) {
+            toastr.success(response.message, "SuccessAlert", { timeOut: 5000, "closeButton": true, "progressBar": true });
+            tr.remove();
         });
     }
 };

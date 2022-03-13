@@ -1,26 +1,63 @@
 ﻿
 @model HobbyDTO
 
+
 <br />
 <form method="post" asp-controller="Hobby" asp-action="AddHobby">
     <div>
         <div>
             <br />
             <label asp-for="MyHobby"> <b>Hobi:</b></label>
-            <input asp-for="MyHobby" type="text" class="form-control" />
+            <input asp-for="MyHobby" id="txtHobby" type="text" class="form-control" />
             <span asp-validation-for="MyHobby" class="text-danger"></span>
 
             <br />
             <br />
-
-
         </div>
     </div>
-
     <br>
-
-    <button type="submit" href="/Hobby/AddHobby/" class="btn btn-outline-success"><b>Hobi Oluştur</b></button>
+    <button type="submit" id="btnSaveHobby" name="SaveHobby" value="Save Hobby" href="/Hobby/AddHobby/" class="btn btn-outline-success"><b>Hobi Oluştur</b></button>
     <br />
-
-
 </form>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSaveHobby").click(function () {
+            SaveHobby();
+        });
+    });
+    function SaveHobby() {
+        debugger;
+        var MyHobby = $("#txtHobby").val();
+        var hobbyDTO = { MyHobby: MyHobby };
+        $.ajax({
+            async: true,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json; charset-utf-8',
+            data: Json.stringify(hobbyDTO),
+            url: 'Hobby/AddHobby',
+            success: function (response) {
+                if (response.success == true) {
+                    toastr.success(response.message, 'Success Alert', { timeOut: 3000, "CloseButton": true });
+                }
+                else {
+                    toastr.info(response.message, 'Information Alert', { timeOut: 3000 });
+                }
+            },
+            error: function () {
+                toastr.error('there is some problem to process your request.', 'Error Alert', { timeOut: 3000 });
+            }
+        });
+    }
+</script>
+
+
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+}

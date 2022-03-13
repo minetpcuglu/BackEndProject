@@ -15,6 +15,6 @@ namespace BusinessLayer.Services.Interface
         Task Add(HobbyDTO hobbyDTO);
         Task<HobbyDTO> GetById(int id);
         Task Update(HobbyDTO hobbyDTO);
-        Task Delete(int id);
+        Task<bool> Delete(int id);
     }
 }
