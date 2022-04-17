@@ -3,7 +3,7 @@
     debugger;
     if (confirm("Silmek istediğinize emin misiniz ?")) {
         $.post("/Education/DeleteEducation/" + id, function (response) {
-            toastr.success(response.message, "SuccessAlert", { timeOut: 5000, "closeButton": true, "progressBar": true });
+            toastr.error(response.message, "SuccessAlert", { timeOut: 5000, "closeButton": true, "progressBar": true });
             tr.remove();
         });
     }
