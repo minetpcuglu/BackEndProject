@@ -24,11 +24,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _hobbyService.GetAll();
-
-
             return Ok(result);
-
-
         }
 
 

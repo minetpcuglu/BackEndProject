@@ -1,6 +1,6 @@
 ﻿@model List<EducationVM>
 
-<table class="table table-bordered">
+<table class="table table-bordered" id="tblEducation">
     <tr>
         <td>#</td>
         <td>Okul Adı</td>
@@ -21,7 +21,16 @@
             <td>@item.Section</td>
             <td>@item.NoteAverage</td>
             <td>@item.Date</td>
-            <td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
+            @*<td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
+                <td>*@
+            <td>
+                <button type="button" class="btn btn-outline-danger btn-sm"
+                        onclick="Delete(@item.Id)">
+                    Sil
+                </button>
+            </td>
+
+
             <td><a href="/Education/UpdateEducation/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
 
 
@@ -30,3 +39,8 @@
 </table>
 
 <a href="/Education/AddEducation/" class="btn btn-primary">Eğitim Bilgisi Ekle</a>
+
+
+@section scripts{
+    <script type="text/javascript" src="~/EducationJavaScript.js"></script>
+}

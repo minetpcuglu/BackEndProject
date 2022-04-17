@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Mapping.Interface
 {
-   public abstract class  IBaseMap<T> : IEntityTypeConfiguration<T> where T : class, IBaseEntity
+    public abstract class IBaseMap<T> : IEntityTypeConfiguration<T> where T : class, IBaseEntity
     {
-   
+
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property(x => x.Status).IsRequired(true);
         }
+
+    
     }
-   
 }

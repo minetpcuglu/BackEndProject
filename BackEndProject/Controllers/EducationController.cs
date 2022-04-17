@@ -56,16 +56,36 @@ namespace BackEndProject.Controllers
             return View(educationVM);
         }
 
+        [HttpPost]
         public async Task<IActionResult> DeleteEducation(int id)
         {
-            await _educationService.Delete(id);
-            return RedirectToAction("Getlist");
+            if (id != 0)
+            {
+                var result = await _educationService.Delete(id);
+                if (result)
+                {
+                    return Json(new ToastViewModel
+                    {
+                        Message = "silindi.",
+                        Success = true
+                    });
+                }
+                else
+                {
+                    return Json(new ToastViewModel
+                    {
+                        Message = "İşlem Başarısız.",
+                        Success = false
+                    });
+                }
+            }
+            return View();
+          
         }
 
         [HttpGet]
         public async Task<IActionResult> UpdateEducation(int id)
         {
-
 
             var value = await _educationService.GetById(id);
             return View(value);

@@ -47,7 +47,8 @@ namespace BackEndProject.Controllers
             if (validateResult.IsValid)
             {
                 await _hobbyServices.Add(hobbyDTO);
-                return Json(data: new { success = true, message = "your request has been successfuly added,." }, new Newtonsoft.Json.JsonSerializerSettings());
+                //return Json(data: new { success = true, message = "your request has been successfuly added,." }, new Newtonsoft.Json.JsonSerializerSettings());
+                return RedirectToAction("Index");
             }
             else
             {
@@ -83,7 +84,7 @@ namespace BackEndProject.Controllers
                     });
                 }
             }
-            return BadRequest();
+            return View();
         }
 
 

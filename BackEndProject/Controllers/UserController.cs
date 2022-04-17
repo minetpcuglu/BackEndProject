@@ -26,11 +26,9 @@ namespace BackEndProject.Controllers
 
         public UserController(UserManager<AppUser> userManager, IMapper mapper, IAppUserService appUser, SignInManager<AppUser> signInManager)
         {
-
             _mapper = mapper;
             _userManager = userManager;
             _appUser = appUser;
-
             _signInManager = signInManager;
         }
 

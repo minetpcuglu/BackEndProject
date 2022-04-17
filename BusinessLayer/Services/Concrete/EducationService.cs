@@ -33,11 +33,19 @@ namespace BusinessLayer.Services.Concrete
             await _unitOfWork.Commit();
         }
 
-        public async Task Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var deleteEducation = await _unitOfWork.EducationRepository.Get(x => x.Id == id);
-            _unitOfWork.EducationRepository.Delete(deleteEducation);
-            await _unitOfWork.Commit();
+            if (id != 0)
+            {
+                var deleteEducation = await _unitOfWork.EducationRepository.Get(x => x.Id == id);
+                _unitOfWork.EducationRepository.Delete(deleteEducation);
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task<List<EducationVM>> GetAll()

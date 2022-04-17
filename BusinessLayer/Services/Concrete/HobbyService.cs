@@ -46,8 +46,8 @@ namespace BusinessLayer.Services.Concrete
             if (id!=0)
             {
                 var deleteHobby = await _unitOfWork.HobbyRepository.Get(x => x.Id == id);
-                _unitOfWork.HobbyRepository.Delete(deleteHobby);
-                _unitOfWork.Commit();
+               _unitOfWork.HobbyRepository.Delete(deleteHobby);
+               
                 return true;
             }
             else
