@@ -62,14 +62,16 @@ namespace BusinessLayer.Services.Concrete
             return _mapper.Map<EducationVM>(educationGet);
         }
 
-        public async Task Update(EducationVM entity)
+        public async Task<bool> Update(EducationVM entity)
         {
             var educationUpdate = _mapper.Map<EducationVM,Education>(entity);
             if (educationUpdate.Id !=0)
             {
                 await _educationRepository.Update(educationUpdate);
                 await _unitOfWork.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
     }
 }

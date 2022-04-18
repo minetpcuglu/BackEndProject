@@ -11,7 +11,7 @@ namespace BusinessLayer.Services.BaseServices.Interface
         Task<List<T>> GetAll();
         Task Add(T entity);
         Task<T> GetById(int id);
-        Task Update(T entity);
+        Task<bool> Update(T entity);
         Task<bool> Delete(int id);
     }
 }
