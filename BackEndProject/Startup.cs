@@ -43,6 +43,10 @@ namespace BackEndProject
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); //uygulamaya geliştirdiğimiz context nesnesi DbContext olarak tanıtılmaktadır.
             #endregion
 
+            #region Cache
+            services.AddMemoryCache();
+            #endregion
+
             #region Identity ValidatorRules
             services.AddIdentity<AppUser, AppRole>
                (x =>
