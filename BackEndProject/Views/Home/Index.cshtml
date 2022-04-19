@@ -1,5 +1,65 @@
 ﻿
+@model List<EntityLayer.Entities.Concrete.Education>
 
-Totel Rows : @ViewBag.TotelRows
+<div class="row">
+    <div class="col-6">
+        <h4>Totel Education:@ViewBag.TotelRows </h4>
+    </div>
+    <div class="col-6">
+        <h4>Time To Load Data: @ViewBag.TotelTime </h4>
+    </div>
+</div>
 <br />
-Time Taken : @ViewBag.TotelTime
+<div class="row">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-startPage="0">First</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-startPage="@(ViewBag.NextPage)">Next</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-startPage="@(ViewBag.PreviousPage)">Previous</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-route-startPage="@(ViewBag.TotelRows/20)">Last</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+<table class="table table-bordered" id="tblEducation">
+    <tr>
+        <td>#</td>
+        <td>Okul Adı</td>
+        <th> Bölüm  </th>
+        <th> Not Ortalaması </th>
+        <th> Tarih </th>
+        <th> Sil</th>
+        <th> Güncelle  </th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.SchollName</td>
+            <td>@item.Section</td>
+            <td>@item.NoteAverage</td>
+            <td>@item.Date</td>
+            @*<td><a href="/Education/DeleteEducation/@item.Id" id="DeleteBtn" onclick="return confirm('Silmek Istediginize Eminmisiniz');" class="btn btn-outline-danger"> <b>Sil</b></a></td>
+                <td>*@
+            <td>
+                <button type="button" class="btn btn-outline-danger btn-sm"
+                        onclick="Delete(@item.Id)">
+                    Sil
+                </button>
+            </td>
+            @*<td>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                            onclick="Update(@item.Id)">
+                        Güncelle
+                    </button>
+                </td>*@
+            <td><a href="/Education/UpdateEducation/@item.Id" class="btn btn-outline-warning"> <b>Güncelle</b></a></td>
+        </tr>
+    }
+</table>
+
+<a href="/Education/AddEducation/" class="btn btn-primary">Eğitim Bilgisi Ekle</a>

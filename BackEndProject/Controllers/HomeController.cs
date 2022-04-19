@@ -30,8 +30,13 @@ namespace BackEndProject.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index( int startPage = 0)
         {
+            var pageCount = 3;
+            var startFrom = startPage + pageCount;
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
+
             List<Education> educations;
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -43,6 +48,8 @@ namespace BackEndProject.Controllers
             stopWatch.Stop();
             ViewBag.TotelTime = stopWatch.Elapsed;
             ViewBag.TotelRows = educations.Count;
+
+            educations = educations.Skip(startFrom).Take(pageCount).ToList();
           
             return View(educations);
         }
