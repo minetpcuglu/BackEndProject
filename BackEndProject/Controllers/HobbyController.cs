@@ -26,11 +26,15 @@ namespace BackEndProject.Controllers
 
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int startPage = 0)
         {
-            var result = await _hobbyServices.GetAll();
-
-            return View(result);
+            var pageCount = 5;
+            var startFrom = startPage + pageCount;
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
+            var value = await _hobbyServices.GetAll();
+            value = value.Skip(startFrom).Take(pageCount).ToList();
+            return View(value);
         }
 
         [HttpGet]

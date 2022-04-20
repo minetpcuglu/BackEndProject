@@ -27,7 +27,7 @@ namespace BackEndProject.Controllers
        
         public async Task<IActionResult> GetList(int startPage = 0)
         {
-            var pageCount = 3;
+            var pageCount = 5;
             var startFrom = startPage + pageCount;
             ViewBag.NextPage = startPage + 1;
             ViewBag.PreviousPage = startPage - 1;

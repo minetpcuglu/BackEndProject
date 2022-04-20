@@ -1,5 +1,14 @@
-﻿
-@model List<HobbyDTO>
+﻿@model List<HobbyDTO>
+<div class="row">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Hobby" asp-route-startPage="0">First</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Hobby" asp-route-startPage="@(ViewBag.NextPage)">Next</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Hobby" asp-route-startPage="@(ViewBag.PreviousPage)">Previous</a></li>
+            <li class="page-item"><a class="page-link" asp-action="Index" asp-controller="Hobby" asp-route-startPage="@(ViewBag.TotelRows/20)">Last</a></li>
+        </ul>
+    </nav>
+</div>
 
     <table class="table table-bordered" id="tblHobby">
         <tr>
