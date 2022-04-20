@@ -24,10 +24,15 @@ namespace BackEndProject.Controllers
         {
             return View();
         }
-
-        public async Task<IActionResult> GetList()
+       
+        public async Task<IActionResult> GetList(int startPage = 0)
         {
+            var pageCount = 3;
+            var startFrom = startPage + pageCount;
+            ViewBag.NextPage = startPage + 1;
+            ViewBag.PreviousPage = startPage - 1;
             var value = await _educationService.GetAll();
+            value = value.Skip(startFrom).Take(pageCount).ToList();
             return View(value);
         }
 
