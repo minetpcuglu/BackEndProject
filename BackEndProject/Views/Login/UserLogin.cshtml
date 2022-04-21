@@ -1,8 +1,10 @@
 ﻿@model LoginViewModel
 
 <h4>Giriş Yap</h4>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
 <hr />
-<form asp-action="UserLogin">
+<form asp-action="UserLogin" method="post">
     <table>
         <tr>
             <td colspan="3"><div asp-validation-summary="All"></div></td>
@@ -14,21 +16,22 @@
         </tr>
         <tr>
             <td><label asp-for="Password"></label></td>
-            <td><input asp-for="Password" /></td>
+            <td><input asp-for=" Password" /></td>
             <td><span asp-validation-for="Password"></span></td>
         </tr>
         <tr>
-                <td><label asp-for="Persistent"></label></td>
-                <td><input asp-for="Persistent" /></td>
-                <td><span asp-validation-for="Persistent"></span></td>
-            </tr>
-
-        @*<tr>
-            <td><label>Remember Me</label></td>
-            <td><input type="checkbox" asp-for="RememberMe" /></td>
-        </tr>*@
-        <tr>
-            <td colspan="3"><input type="submit" value="Giriş Yap" /></td>
+            <td><label asp-for="Persistent"></label></td>
+            <td><input asp-for=" Persistent" /></td>
+            <td><span asp-validation-for="Persistent"></span></td>
         </tr>
+        @*<tr>
+                <td colspan="3"><input type="submit" value="Giriş Yap" /></td>
+            </tr>*@
     </table>
+    <br />
+    <div class="g-recaptcha" data-sitekey="6LeGiIsfAAAAAAgni90PmiDW1ifZ3_4iHJtOlbFq"></div>
+    <br />
+    <button type="submit">Gönder</button>
+    <br />
 </form>
+<br />

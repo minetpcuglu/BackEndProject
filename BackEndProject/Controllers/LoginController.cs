@@ -4,10 +4,12 @@ using EntityLayer.Entities.Concrete;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,7 +20,7 @@ namespace BackEndProject.Controllers
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
         private readonly IAppUserService _appUser;
-      
+
 
         public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAppUserService appUser)
         {
@@ -26,86 +28,6 @@ namespace BackEndProject.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-
-
-        #region Loglama Example
-        //public IActionResult UserLogin(string returnUrl)
-        //{
-        //    //kullanıcının yetkisinin olmadığı sayfalara erişmeye  çalıştığında  direkt olarak “Login” actionına yönlendirecektir
-        //    TempData["returnUrl"] = returnUrl; //tempdata kontrolu atandi 
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> UserLogin(LoginViewModel model)
-        //{
-        //    //if (ModelState.IsValid)
-        //    //{
-        //    //    AppUser appUser = await _userManager.FindByEmailAsync(model.Email); //mail uygun user varsa cekilir
-        //    //    if (User != null)
-        //    //    {
-        //    //        //İlgili kullanıcının geçmişte oluşturulmuş bir Cookie varsa siliyoruz.
-        //    //        await _signInManager.SignOutAsync();
-
-        //    //        //kullanıcıya SignInManager(kullanıcı giriş ve çıkış kontrolu sınıfı) sınıfının PasswordSignInAsync metoduyla oturum açmasına izin verilir.
-        //    //        Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(appUser, model.Password, model.Persistent, model.Lock);
-        //    //        return RedirectToAction("Index", "User");
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        ModelState.AddModelError("", "Hatalı Kullanıcı Adı/Şifre");
-        //    //        return View();
-        //    //    }
-        //    //}
-
-        //    return View(model);
-
-        //    //logger.Info("Login Method");
-        //    //try
-        //    //{
-        //    //    if (ModelState.IsValid)
-        //    //    {
-
-        //    //        AppUser appUser = await _userManager.FindByEmailAsync(model.Email); //mail uygun user varsa cekilir
-        //    //        if (User != null)
-        //    //        {
-
-        //    //            //İlgili kullanıcının geçmişte oluşturulmuş bir Cookie varsa siliyoruz.
-        //    //            await _signInManager.SignOutAsync();
-
-        //    //            //kullanıcıya SignInManager(kullanıcı giriş ve çıkış kontrolu sınıfı) sınıfının PasswordSignInAsync metoduyla oturum açmasına izin verilir.
-        //    //            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(appUser, model.Password, model.Persistent, model.Lock);
-        //    //            logger.Info("Good.Login Succes");
-        //    //            return View("LoginSuccess", model);
-        //    //        }
-        //    //        else
-        //    //        {
-        //    //            ModelState.AddModelError("", "Hatalı Kullanıcı Adı/Şifre");
-        //    //            logger.Info("Sorry.Login Failed");
-        //    //            return View("LoginFailed", model);
-        //    //        }
-
-
-        //    //    }
-
-
-        //    //}
-        //    //catch (Exception e)
-        //    //{
-
-        //    //    logger.Error("Exception ! " + e.Message);
-        //    //    return Content("Exception in Login" + e.Message);
-
-        //    //}
-
-        //    //return View(model);
-
-
-
-        //}
-        #endregion 
-
 
         public IActionResult UserLogin(string returnUrl)
         {
@@ -122,26 +44,31 @@ namespace BackEndProject.Controllers
         [HttpPost]
         public async Task<IActionResult> UserLogin(LoginViewModel loginView, string returnUrl)
         {
-
-            //if (ModelState.IsValid)
-            //{
-            //    var result = await _appUser.LogIn(loginView);
-            //    if (result.Succeeded)
-            //    {
-            //        TempData["success"] = "Giriş İşlemi Başarılı Yönlendiriliyorsunuz";
-            //        return RedirectToAction(nameof(HomeController.Index), "Home"); // Eğer giriş başarılı olursa HomeController'daki Home Action'a yönlendir.
-            //    }
-            //    ModelState.AddModelError(String.Empty, "Geçersiz giriş denemesi..!");
-            //    TempData["failed"] = "Lütfen Tekrar Deneyiniz";
-            //}
-
+            var captchaImage = HttpContext.Request.Form["g-recaptcha-response"];
             if (ModelState.IsValid)
             {
-                var result = await _appUser.LogIn(loginView);
+                if (string.IsNullOrEmpty(captchaImage))
+                {
+                    ModelState.AddModelError(String.Empty, "Dogrulama Doldurulmadı..!");
+                    //return Content("Doldurulmadı");
+                }
 
-                if (result.Succeeded) return RedirectToLocal(returnUrl);
+                var verified = await CheckCaptcha();
+                if (!verified)
+                {
+                    ModelState.AddModelError(String.Empty, "Geçersiz Dogrulama..!");
+                    //return Content("Dogrulanmadı");
+                }
+                if (verified)
+                {
 
-                ModelState.AddModelError(String.Empty, "Invalid login attempt..!");
+                    var result = await _appUser.LogIn(loginView);
+                    if (result.Succeeded) return RedirectToLocal(returnUrl);
+                }
+                ModelState.AddModelError(String.Empty, "Hatalı Kullanıcı Adı veya Şifre..!");
+                return View();
+
+
             }
 
             return View();
@@ -159,11 +86,56 @@ namespace BackEndProject.Controllers
 
             return RedirectToAction("UserLogin");
         }
+        public async Task<bool> CheckCaptcha()
+        {
+            var postData = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("secret", "6LeGiIsfAAAAAFbdoFqhmnV41kiSCRJFRtM8FRvu"),
+                new KeyValuePair<string, string>("response", HttpContext.Request.Form["g-recaptcha-response"])
 
+            };
+
+            var client = new HttpClient();
+            var response = await client.PostAsync("https://www.google.com/recaptcha/api/siteverify", new FormUrlEncodedContent(postData));
+            var o = (JObject)JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+            return (bool)o["success"];
+        }
+
+        #region Loginpost
+        //[HttpPost]
+        //public async Task<IActionResult> UserLogin(LoginViewModel loginView, string returnUrl)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = await _appUser.LogIn(loginView);
+
+        //        if (result.Succeeded) return RedirectToLocal(returnUrl);
+
+        //        ModelState.AddModelError(String.Empty, "Invalid login attempt..!");
+        //    }
+
+        //    return View();
+        //}
+        #endregion
+        #region LogOut
         //public async Task<IActionResult> Logout()
         //{
         //    await _signInManager.SignOutAsync();
         //    return RedirectToAction("Index", "User");
         //}
+        #endregion
+        #region UserLogin
+        //if (ModelState.IsValid)
+        //{
+        //    var result = await _appUser.LogIn(loginView);
+        //    if (result.Succeeded)
+        //    {
+        //        TempData["success"] = "Giriş İşlemi Başarılı Yönlendiriliyorsunuz";
+        //        return RedirectToAction(nameof(HomeController.Index), "Home"); // Eğer giriş başarılı olursa HomeController'daki Home Action'a yönlendir.
+        //    }
+        //    ModelState.AddModelError(String.Empty, "Geçersiz giriş denemesi..!");
+        //    TempData["failed"] = "Lütfen Tekrar Deneyiniz";
+        //}
+        #endregion
     }
 }
