@@ -45,6 +45,7 @@ namespace BackEndProject
 
             #region Cache
             services.AddMemoryCache();
+            services.AddResponseCaching();
             #endregion
 
             #region Identity ValidatorRules
